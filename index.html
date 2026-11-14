@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>টিপের হিসাব - TRIP Hisab</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK v8 CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <style>
+        .purple-bg { background-color: #6b21a8; }
+        .blue-bg { background-color: #1e3a8a; }
+        .watermark {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), 
+                              url('https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=400');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; }
+        .app-container { max-width: 480px; margin: 0 auto; min-height: 100vh; padding-bottom: 75px; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 antialiased">
+
+    <div class="app-container bg-white shadow-xl relative min-h-screen">
+
+        <!-- Header Screen (Logged In Customer) -->
+        <header id="mainHeader" class="hidden">
+            <!-- Header Section 1: Purple Header -->
+            <div class="purple-bg text-white p-3 text-center relative shadow-md">
+                <div class="flex items-center justify-center space-x-2">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1 border-2 border-yellow-400">
+                        <i class="fa-solid fa-truck-front text-lg text-purple-800"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-extrabold tracking-wide">টিপের হিসাব</h1>
+                    </div>
+                </div>
+                <span id="headCarNoBadge" class="absolute top-2 right-2 text-[10px] bg-yellow-400 text-purple-900 font-bold px-2 py-0.5 rounded-full">গাড়ি নং</span>
+                <button onclick="logout()" class="absolute top-2 left-2 text-[10px] bg-red-500 text-white px-2 py-1 rounded shadow font-bold">লগআউট</button>
+            </div>
+
+            <!-- Header Section 2: Blue Editable Vehicle Info Header -->
+            <div class="blue-bg text-white p-2.5 text-[11px] space-y-1 relative">
+                <button onclick="openVehicleInfoModal()" class="absolute top-2 right-2 bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded hover:bg-amber-600 font-bold">
+                    <i class="fa-solid fa-pen-to-square"></i> তথ্য এডিট
+                </button>
+
+                <div class="flex justify-between items-center border-b border-blue-700 pb-0.5 pr-16">
+                    <span><i class="fa-solid fa-truck"></i> গাড়ির সিরিয়াল ও নম্বর: <strong id="headSerial">তথ্য দিন...</strong></span>
+                </div>
+                <div class="flex justify-between items-center border-b border-blue-700 pb-0.5">
+                    <span><i class="fa-solid fa-user-gear"></i> ড্রাইভার: <strong id="headDriver">তথ্য দিন...</strong></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span><i class="fa-solid fa-user-tie"></i> মালিক: <strong id="headOwner">তথ্য দিন...</strong></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Area -->
+        <main id="appContent" class="p-3">
+
+            <!-- Authentication View -->
+            <div id="authView" class="py-6 px-4">
+                <div class="text-center mb-6">
+                    <div class="w-24 h-24 purple-bg text-white rounded-full flex items-center justify-center mx-auto mb-2 border-4 border-yellow-400 shadow-lg">
+                        <i class="fa-solid fa-truck-moving text-4xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-purple-900">টিপের হিসাব</h2>
+                    <p class="text-xs text-gray-500">আপনার ট্রিপ ও পরিবহন খরচের বিশ্বস্ত হিসাব</p>
+                    <p class="text-[11px] text-purple-700 font-bold mt-1">⚠️ ৫ দিন ফ্রি ট্রায়াল! এরপর প্রতি মাসে মাত্র ২০ টাকা চার্জ প্রযোজ্য।</p>
+                </div>
+
+                <div class="bg-purple-50 p-4 rounded-xl border border-purple-200 shadow-sm">
+                    <div class="flex border-b border-purple-200 mb-4">
+                        <button id="tabLogin" onclick="switchAuthTab('login')" class="w-1/2 py-2 font-bold text-purple-800 border-b-2 border-purple-800">লগইন</button>
+                        <button id="tabRegister" onclick="switchAuthTab('register')" class="w-1/2 py-2 font-bold text-gray-500">রেজিস্ট্রেশন</button>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">মোবাইল নাম্বার</label>
+                            <input type="tel" id="loginPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">৪ সংখ্যার পাসওয়ার্ড</label>
+                            <input type="password" id="loginPass" maxlength="4" required placeholder="****" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                        </div>
+                        <button type="submit" class="w-full purple-bg text-white py-2 rounded font-bold shadow hover:bg-purple-900 transition">লগইন করুন</button>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 hidden">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">আপনার নাম</label>
+                            <input type="text" id="regName" required placeholder="আপনার নাম" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">মোবাইল নাম্বার</label>
+                            <input type="tel" id="regPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">৪ সংখ্যার পিন/পাসওয়ার্ড</label>
+                            <input type="password" id="regPass" maxlength="4" required placeholder="****" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-bold shadow hover:bg-green-700 transition">অ্যাকাউন্ট খুলুন (৫ দিন ফ্রি)</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Password Lockout Screen (After 5 Wrong Attempts) -->
+            <div id="lockoutView" class="hidden py-10 px-4 text-center">
+                <div class="bg-red-50 border-2 border-red-500 rounded-xl p-5 shadow-xl space-y-3">
+                    <i class="fa-solid fa-triangle-exclamation text-4xl text-red-600"></i>
+                    <h2 class="text-lg font-bold text-red-700">অ্যাকাউন্ট সিকিউরিটি লক!</h2>
+                    <p class="text-xs text-gray-700">টানা ৫ বার ভুল পাসওয়ার্ড দেওয়ার কারণে আপনার অ্যাকাউন্টটি সাময়িকভাবে লক করা হয়েছে। নতুন পাসওয়ার্ড সেট করতে এডমিনের সাথে যোগাযোগ করুন।</p>
+                    
+                    <div class="bg-white p-3 rounded border text-left space-y-1.5 shadow-inner text-xs">
+                        <p class="font-bold text-purple-900">এডমিনের সাথে যোগাযোগের নম্বর:</p>
+                        <p><i class="fa-brands fa-whatsapp text-green-600"></i> WhatsApp: <strong class="text-gray-900">01711-573501</strong></p>
+                        <p><i class="fa-solid fa-phone text-blue-600"></i> হেল্পলাইন: <strong class="text-gray-900">+880 9638-639227</strong></p>
+                    </div>
+                    <button onclick="showView('auth')" class="w-full bg-gray-700 text-white py-2 rounded font-bold text-xs">লগইন পেজে ফিরে যান</button>
+                </div>
+            </div>
+
+            <!-- Subscription Locked View -->
+            <div id="lockedView" class="hidden py-6 px-3 text-center">
+                <div class="bg-red-50 border-2 border-red-500 rounded-xl p-4 shadow-lg space-y-3 text-xs">
+                    <i class="fa-solid fa-lock text-4xl text-red-600"></i>
+                    <h2 class="text-base font-bold text-red-700">মেয়াদ শেষ! মাসিক ২০ টাকা পেমেন্ট করুন</h2>
+                    <p class="text-gray-600">আপনার ফ্রি ট্রায়াল অথবা আগের মাসের মেয়াদ শেষ হয়েছে। অ্যাপসটি চালু রাখতে প্রতি মাসে ২০ টাকা চার্জ পরিশোধ করুন।</p>
+
+                    <div class="bg-white p-3 rounded border text-left space-y-1.5 shadow-inner">
+                        <p class="font-bold text-gray-800 border-b pb-1">পেমেন্ট করার মাধ্যম (ফি: ২০ টাকা):</p>
+                        <p><i class="fa-solid fa-mobile-screen text-purple-600"></i> রকেট এজেন্ট: <strong>01613-573627+3</strong></p>
+                        <p><i class="fa-solid fa-wallet text-pink-600"></i> বিকাশ/নগদ পার্সোনাল: <strong>01711-573501</strong></p>
+                    </div>
+
+                    <!-- Payment Verification Form -->
+                    <form onsubmit="submitPaymentVerification(event)" class="bg-white p-3 rounded border space-y-2 text-left">
+                        <p class="font-bold text-purple-900 text-[11px]">টাকা পাঠিয়ে নিচে তথ্য দিন (ভেরিফাই হতে ২০ মিনিট লাগবে):</p>
+                        <div>
+                            <label class="block font-semibold text-[11px] mb-0.5">যে নম্বর থেকে টাকা পাঠিয়েছেন:</label>
+                            <input type="tel" id="paySenderNo" required placeholder="017XXXXXXXX" class="w-full p-1.5 border rounded text-xs outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-[11px] mb-0.5">ট্রানজেকশন আইডি (TrxID):</label>
+                            <input type="text" id="payTrxId" required placeholder="যেমন: 9G78H..." class="w-full p-1.5 border rounded text-xs outline-none">
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700 transition">পেমেন্ট সাবমিট করুন</button>
+                    </form>
+
+                    <div class="border-t pt-2 text-[11px] space-y-1 text-left bg-purple-50 p-2 rounded">
+                        <p class="font-bold text-purple-900">আমাদের সাথে যোগাযোগ:</p>
+                        <p><i class="fa-brands fa-whatsapp text-green-600"></i> WhatsApp: <strong class="text-gray-800">01711-573501</strong></p>
+                        <p><i class="fa-solid fa-phone text-blue-600"></i> হেল্পলাইন: <strong class="text-gray-800">+880 9638-639227</strong></p>
+                    </div>
+
+                    <button onclick="logout()" class="w-full bg-gray-700 text-white py-2 rounded font-bold">লগআউট করুন</button>
+                </div>
+            </div>
+
+            <!-- Customer Trip Dashboard -->
+            <div id="dashboardView" class="hidden space-y-4">
+                <div class="watermark border-2 border-purple-200 rounded-lg p-3 shadow-sm">
+                    <div class="grid grid-cols-2 gap-2 text-center text-sm font-bold">
+                        <div class="bg-white/80 p-2 rounded border border-purple-300">
+                            <span class="text-gray-600 block text-xs">মোট আয়:</span>
+                            <span id="sumTotalRent" class="text-green-600">৳ 0</span>
+                        </div>
+                        <div class="bg-white/80 p-2 rounded border border-purple-300">
+                            <span class="text-gray-600 block text-xs">মোট খরচ:</span>
+                            <span id="sumTotalCost" class="text-red-600">৳ 0</span>
+                        </div>
+                        <div class="bg-white/80 p-2 rounded border border-purple-300">
+                            <span class="text-gray-600 block text-xs">মালিকের নিট লাভ:</span>
+                            <span id="sumNetProfit" class="text-blue-600">৳ 0</span>
+                        </div>
+                        <div class="bg-white/80 p-2 rounded border border-purple-300">
+                            <span class="text-gray-600 block text-xs">মোট ট্রিপ:</span>
+                            <span id="sumTotalTrips" class="text-purple-600">0 টি</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add / Edit Trip Form -->
+                <div class="bg-white border rounded-lg shadow-sm p-4">
+                    <h3 id="formTitle" class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center justify-between">
+                        <span><i class="fa-solid fa-plus-circle text-purple-700"></i> নতুন হিসাব যোগ করুন</span>
+                        <span class="text-xs text-gray-400 font-normal">তারিখ অটো থাকবে</span>
+                    </h3>
+
+                    <form id="tripForm" onsubmit="saveTrip(event)" class="space-y-3 text-xs">
+                        <input type="hidden" id="editTripId" value="">
+
+                        <div>
+                            <label class="font-semibold block mb-1">তারিখ</label>
+                            <input type="date" id="tripDate" required class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                        </div>
+                        <div>
+                            <label class="font-semibold block mb-1">রুট / বিস্তারিত</label>
+                            <input type="text" id="tripRoute" placeholder="যেমন: ঢাকা থেকে টাঙ্গাইল" required class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="font-semibold block mb-1">মোট ভাড়া (৳)</label>
+                                <input type="number" id="tripRent" required placeholder="0" class="w-full p-2 border rounded font-bold text-green-700 outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold block mb-1">জ্বালানি খরচ (তেল/গ্যাস)</label>
+                                <input type="number" id="costFuel" placeholder="0" class="w-full p-2 border rounded outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold block mb-1">টোল খরচ</label>
+                                <input type="number" id="costToll" placeholder="0" class="w-full p-2 border rounded outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold block mb-1">ড্রাইভার/হেলপার খোরাকি</label>
+                                <input type="number" id="costDriver" placeholder="0" class="w-full p-2 border rounded outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold block mb-1">পুলিশ খরচ</label>
+                                <input type="number" id="costPolice" placeholder="0" class="w-full p-2 border rounded outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold block mb-1">পৌরসভা / শ্রমিক</label>
+                                <input type="number" id="costLabor" placeholder="0" class="w-full p-2 border rounded outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold block mb-1">অন্যান্য খরচ</label>
+                            <input type="number" id="costOthers" placeholder="0" class="w-full p-2 border rounded outline-none">
+                        </div>
+
+                        <div class="flex space-x-2">
+                            <button type="submit" id="saveBtn" class="flex-1 bg-purple-700 text-white font-bold py-2.5 rounded shadow hover:bg-purple-800 transition">সেভ করুন</button>
+                            <button type="button" id="cancelEditBtn" onclick="resetForm()" class="hidden bg-gray-500 text-white font-bold px-4 py-2.5 rounded shadow">বাতিল</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Personal Trip History List -->
+                <div class="space-y-2">
+                    <h3 class="font-bold text-sm text-gray-700">আমার আগের হিসাবসমূহ:</h3>
+                    <div id="tripList" class="space-y-2">
+                        <!-- Loaded Dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Party Directory Screen -->
+            <div id="partyView" class="hidden space-y-3 text-xs">
+                <div class="bg-amber-100 p-3 rounded font-bold text-amber-900 border border-amber-300 flex justify-between items-center">
+                    <span><i class="fa-solid fa-users"></i> পার্টি ডিরেক্টরি (পার্টির নাম্বার ও ঠিকানা)</span>
+                    <button onclick="openPartyModal()" class="bg-amber-700 text-white px-2.5 py-1 rounded text-[11px] font-bold shadow">
+                        <i class="fa-solid fa-plus"></i> নতুন পার্টি যোগ করুন
+                    </button>
+                </div>
+
+                <div id="partyDirectoryList" class="space-y-2 pt-1">
+                    <!-- Party items loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Contact & Helpline / Emergency Services Screen -->
+            <div id="contactView" class="hidden space-y-3 text-xs">
+                <div class="bg-purple-100 p-3 rounded font-bold text-purple-900 border border-purple-300">
+                    যোগাযোগ, জরুরী সেবা ও জেলার দূরত্ব
+                </div>
+
+                <!-- Admin & Payment Contacts -->
+                <div class="bg-white border rounded p-3 shadow-sm space-y-2">
+                    <p class="font-bold text-gray-800 border-b pb-1">আমাদের সাথে যোগাযোগের মাধ্যম:</p>
+                    <div class="space-y-1.5">
+                        <a href="https://wa.me/8801711573501" target="_blank" class="flex items-center space-x-2 bg-green-50 text-green-800 p-2 rounded border border-green-200 font-bold">
+                            <i class="fa-brands fa-whatsapp text-base text-green-600"></i>
+                            <span>WhatsApp: 01711-573501</span>
+                        </a>
+                        <a href="tel:+8809638639227" class="flex items-center space-x-2 bg-blue-50 text-blue-800 p-2 rounded border border-blue-200 font-bold">
+                            <i class="fa-solid fa-phone text-base text-blue-600"></i>
+                            <span>হেল্পলাইন: +880 9638-639227</span>
+                        </a>
+                    </div>
+                    <div class="pt-1 text-[11px] space-y-1 text-gray-700">
+                        <p><i class="fa-solid fa-mobile-screen text-purple-600"></i> রকেট এজেন্ট (মাসিক ফি ২০ টাকা): <strong>01613-573627+3</strong></p>
+                        <p><i class="fa-solid fa-wallet text-pink-600"></i> বিকাশ/নগদ পার্সোনাল: <strong>01711-573501</strong></p>
+                    </div>
+                </div>
+
+                <!-- Emergency Contacts Category Buttons -->
+                <div class="flex overflow-x-auto space-x-1 py-1">
+                    <button onclick="showContactTab('dist')" class="px-2.5 py-1 bg-purple-700 text-white rounded whitespace-nowrap">৬৪ জেলার দূরত্ব</button>
+                    <button onclick="showContactTab('police')" class="px-2.5 py-1 bg-blue-700 text-white rounded whitespace-nowrap">পুলিশ (৪ জন)</button>
+                    <button onclick="showContactTab('fire')" class="px-2.5 py-1 bg-red-700 text-white rounded whitespace-nowrap">ফায়ার সার্ভিস</button>
+                    <button onclick="showContactTab('hospital')" class="px-2.5 py-1 bg-green-700 text-white rounded whitespace-nowrap">হাসপাতাল</button>
+                </div>
+
+                <div id="districtSearchBox" class="mb-1">
+                    <input type="text" id="distSearch" oninput="filterDistricts()" placeholder="জেলার নাম দিয়ে দূরত্ব খুঁজুন..." class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-purple-600">
+                </div>
+
+                <div id="contactTabContent" class="bg-white border p-3 rounded min-h-[200px] max-h-[300px] overflow-y-auto">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Google Maps Screen -->
+            <div id="mapView" class="hidden space-y-2">
+                <h3 class="text-xs font-bold text-gray-700">গুগল ম্যাপস লোকেশন ট্র্যাকিং</h3>
+                <div class="w-full h-[380px] rounded border overflow-hidden shadow">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.902442430137!2d90.3910801!3d23.7508643!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b888ad332801%3A0xde54b76474e0e5e0!2sDhaka!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <!-- Admin Control Panel (Secure View for Mukul) -->
+            <div id="adminView" class="hidden space-y-4">
+                <div class="bg-yellow-100 border border-yellow-400 p-3 rounded text-xs text-yellow-800 font-semibold space-y-1">
+                    <div class="flex justify-between items-center">
+                        <span><i class="fa-solid fa-user-shield"></i> এডমিন কন্ট্রোল প্যানেল (মুকুল)</span>
+                        <button onclick="logout()" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">লগআউট</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-1 border-t border-yellow-300 text-[11px]">
+                        <p>মোট নিবন্ধিত গাড়ি/ব্যবহারকারী: <strong id="adminTotalCarsCount" class="text-purple-900">০</strong></p>
+                        <p>মেয়াদোত্তীর্ণ/বকেয়া: <strong id="adminUnpaidCount" class="text-red-700">০</strong></p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <h3 class="font-bold text-sm text-gray-800">সকল কাস্টমারের ডাটা ও পেমেন্ট রিকোয়েস্ট তালিকা:</h3>
+                    <div id="adminUserList" class="space-y-3">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Vehicle Info Edit Popup Modal -->
+        <div id="vehicleModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-sm rounded-xl p-4 shadow-xl text-xs space-y-3">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <h3 class="font-bold text-purple-900 text-sm"><i class="fa-solid fa-truck"></i> গাড়ি ও তথ্য আপডেট</h3>
+                    <button onclick="closeVehicleInfoModal()" class="text-gray-500 hover:text-red-600 font-bold text-base">&times;</button>
+                </div>
+
+                <form onsubmit="saveVehicleInfo(event)" class="space-y-2">
+                    <div>
+                        <label class="font-semibold block mb-0.5 text-gray-700">গাড়ির নম্বর / ড্রাগ-আইডি</label>
+                        <input type="text" id="inputCarNo" placeholder="যেমন: ১১০৯" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                    </div>
+                    <div>
+                        <label class="font-semibold block mb-0.5 text-gray-700">গাড়ির সিরিয়াল নম্বর</label>
+                        <input type="text" id="inputSerial" placeholder="যেমন: ঢাকা মেট্রো-ট ১২-XXXX" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                    </div>
+                    <div>
+                        <label class="font-semibold block mb-0.5 text-gray-700">ড্রাইভারের নাম ও মোবাইল</label>
+                        <input type="text" id="inputDriver" placeholder="যেমন: নাম (017XXXXXXXX)" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                    </div>
+                    <div>
+                        <label class="font-semibold block mb-0.5 text-gray-700">মালিকের নাম ও মোবাইল</label>
+                        <input type="text" id="inputOwner" placeholder="যেমন: নাম (017XXXXXXXX)" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                    </div>
+
+                    <div class="flex space-x-2 pt-2">
+                        <button type="submit" class="flex-1 bg-blue-800 text-white font-bold py-2 rounded">আপডেট করুন</button>
+                        <button type="button" onclick="closeVehicleInfoModal()" class="bg-gray-400 text-white font-bold px-3 py-2 rounded">বাতিল</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Party Contact Add/Edit Popup Modal -->
+        <div id="partyModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-sm rounded-xl p-4 shadow-xl text-xs space-y-3">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <h3 id="partyModalTitle" class="font-bold text-amber-900 text-sm"><i class="fa-solid fa-user-plus"></i> পার্টির তথ্য সেভ করুন</h3>
+                    <button onclick="closePartyModal()" class="text-gray-500 hover:text-red-600 font-bold text-base">&times;</button>
+                </div>
+
+                <form onsubmit="savePartyContact(event)" class="space-y-2">
+                    <input type="hidden" id="editPartyId" value="">
+                    <div>
+                        <label class="font-semibold block mb-0.5 text-gray-700">পার্টির নাম</label>
+                        <input type="text" id="partyName" required placeholder="পার্টি / কোম্পানির নাম" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-amber-600">
+                    </div>
+                    <div>
+                        <label class="font-semibold block mb-0.5 text-gray-700">মোবাইল নম্বর</label>
+                        <input type="tel" id="partyPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-amber-600">
+                    </div>
+                    <div>
+                        <label class="font-semibold block mb-0.5 text-gray-700">ঠিকানা / রুট</label>
+                        <input type="text" id="partyAddress" placeholder="যেমন: টাঙ্গাইল" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-amber-600">
+                    </div>
+
+                    <div class="flex space-x-2 pt-2">
+                        <button type="submit" class="flex-1 bg-amber-700 text-white font-bold py-2 rounded">সেভ করুন</button>
+                        <button type="button" onclick="closePartyModal()" class="bg-gray-400 text-white font-bold px-3 py-2 rounded">বাতিল</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav id="bottomNav" class="bottom-nav bg-purple-900 text-white border-t border-purple-800 max-w-[480px] mx-auto hidden">
+            <div class="flex justify-around items-center py-2 text-center text-[10px]">
+                <button onclick="navSwitch('dashboard')" class="flex-1 hover:text-yellow-400">
+                    <i class="fa-solid fa-calculator text-lg block mb-0.5"></i> হিসাব
+                </button>
+                <button onclick="navSwitch('party')" class="flex-1 hover:text-yellow-400">
+                    <i class="fa-solid fa-users text-lg block mb-0.5"></i> পার্টির নাম্বার
+                </button>
+                <button onclick="navSwitch('contact')" class="flex-1 hover:text-yellow-400">
+                    <i class="fa-solid fa-headset text-lg block mb-0.5"></i> যোগাযোগ
+                </button>
+                <button id="adminNavBtn" onclick="navSwitch('admin')" class="flex-1 hover:text-yellow-400 hidden">
+                    <i class="fa-solid fa-user-shield text-lg block mb-0.5"></i> এডমিন
+                </button>
+                <button onclick="navSwitch('map')" class="flex-1 hover:text-yellow-400">
+                    <i class="fa-solid fa-map-location-dot text-lg block mb-0.5"></i> ম্যাপস
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Application Script Logic with Firebase Integration -->
+    <script>
+        // Firebase Configuration for Trip Hisab Mukul
+        const firebaseConfig = {
+            databaseURL: "https://trip-hisab-mukul-default-rtdb.firebaseio.com/"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        const ADMIN_PHONE = "01713573627";
+        const ADMIN_PASS = "1320";
+
+        const DISTRICTS_DATA = [
+            { name: "টাঙ্গাইল", dist: "৯৮ কি.মি." }, { name: "গাজীপুর", dist: "৩৭ কি.মি." },
+            { name: "নারায়ণগঞ্জ", dist: "১৭ কি.মি." }, { name: "মুন্সীগঞ্জ", dist: "২৭ কি.মি." },
+            { name: "মানিকগঞ্জ", dist: "৬৩ কি.মি." }, { name: "নরসিংদী", dist: "৫০ কি.মি." },
+            { name: "ফরিদপুর", dist: "১৪৫ কি.মি." }, { name: "মাদারীপুর", dist: "১৩২ কি.মি." },
+            { name: "গোপালগঞ্জ", dist: "১৬০ কি.মি." }, { name: "রাজবাড়ী", dist: "১২৫ কি.মি." },
+            { name: "শরীয়তপুর", dist: "১০৫ কি.মি." }, { name: "চট্টগ্রাম", dist: "২৪২ কি.মি." },
+            { name: "কক্সবাজার", dist: "৩৯১ কি.মি." }, { name: "কুমিল্লা", dist: "৯৭ কি.মি." },
+            { name: "ফেণী", dist: "১৫১ কি.মি." }, { name: "নোয়াখালী", dist: "১৬৭ কি.মি." },
+            { name: "লক্ষ্মীপুর", dist: "১৩৭ কি.মি." }, { name: "চাঁদপুর", dist: "১১৫ কি.মি." },
+            { name: "ব্রাহ্মণবাড়িয়া", dist: "১০৯ কি.মি." }, { name: "রাঙ্গামাটি", dist: "৩০৮ কি.মি." },
+            { name: "বান্দরবান", dist: "৩২৫ কি.মি." }, { name: "খাগড়াছড়ি", dist: "২৫৯ কি.মি." },
+            { name: "সিলেট", dist: "২৩৬ কি.মি." }, { name: "মৌলভীবাজার", dist: "২০৩ কি.মি." },
+            { name: "হবিগঞ্জ", dist: "১৩১ কি.মি." }, { name: "সুনামগঞ্জ", dist: "২৯৬ কি.মি." },
+            { name: "রাজশাহী", dist: "২৪৪ কি.মি." }, { name: "বগুড়া", dist: "১৯৭ কি.মি." },
+            { name: "পাবনা", dist: "২১৫ কি.মি." }, { name: "সিরাজগঞ্জ", dist: "১৩০ কি.মি." },
+            { name: "নাটোর", dist: "২২০ কি.মি." }, { name: "নওগাঁ", dist: "২৭২ কি.মি." },
+            { name: "চাঁপাইনবাবগঞ্জ", dist: "৩০২ কি.মি." }, { name: "জয়পুরহাট", dist: "২৪৯ কি.মি." },
+            { name: "রংপুর", dist: "৩০৪ কি.মি." }, { name: "দিনাজপুর", dist: "৩৩৮ কি.মি." },
+            { name: "গাইবান্ধা", dist: "২৬৮ কি.মি." }, { name: "কুড়িগ্রাম", dist: "৩৪২ কি.মি." },
+            { name: "নীলফামারী", dist: "৩৫৭ কি.মি." }, { name: "লালমনিরহাট", dist: "৩৪৭ কি.মি." },
+            { name: "ঠাকুরগাঁও", dist: "৪১০ কি.মি." }, { name: "পঞ্চগড়", dist: "৪৪০ কি.মি." },
+            { name: "খুলনা", dist: "২১৭ কি.মি." }, { name: "যশোর", dist: "২৪৯ কি.মি." },
+            { name: "সাতক্ষীরা", dist: "২৩৮ কি.মি." }, { name: "বাগেরহাট", dist: "১৭৮ কি.মি." },
+            { name: "ঝিনাইদহ", dist: "২০৬ কি.মি." }, { name: "কুষ্টিয়া", dist: "২৪০ কি.মি." },
+            { name: "মাগুরা", dist: "১৭৬ কি.মি." }, { name: "মেহেরপুর", dist: "২৩৬ কি.মি." },
+            { name: "চুয়াডাঙ্গা", dist: "২১১ কি.মি." }, { name: "নড়াইল", dist: "১৩২ কি.মি." },
+            { name: "বরিশাল", dist: "১৮৩ কি.মি." }, { name: "পটুয়াখালী", dist: "২৪০ কি.মি." },
+            { name: "ভোলা", dist: "২৫০ কি.মি." }, { name: "পিরোজপুর", dist: "২০০ কি.মি." },
+            { name: "বরগুনা", dist: "২৭৫ কি.মি." }, { name: "ঝালকাঠি", dist: "১৯৫ কি.মি." },
+            { name: "ময়মনসিংহ", dist: "১২০ কি.মি." }, { name: "জামালপুর", dist: "১৪০ কি.মি." },
+            { name: "শেরপুর", dist: "১৯৮ কি.মি." }, { name: "নেত্রকোণা", dist: "১৬০ কি.মি." }
+        ];
+
+        let currentUser = JSON.parse(localStorage.getItem('trip_current_user')) || null;
+        let usersDB = [];
+        let tripsDB = [];
+        let partyDB = [];
+        let paymentsDB = [];
+        let failedAttempts = JSON.parse(localStorage.getItem('trip_failed_attempts')) || {};
+
+        window.onload = function() {
+            const tripDateInput = document.getElementById('tripDate');
+            if (tripDateInput) {
+                tripDateInput.valueAsDate = new Date();
+            }
+
+            // Sync with Firebase Realtime Database
+            fetchAllFirebaseData(() => {
+                if (currentUser) {
+                    checkSubscriptionAndRender();
+                } else {
+                    showView('auth');
+                }
+            });
+        };
+
+        function fetchAllFirebaseData(callback) {
+            db.ref('/').once('value').then((snapshot) => {
+                const data = snapshot.val() || {};
+                
+                usersDB = [];
+                if (data.users) {
+                    Object.keys(data.users).forEach(key => usersDB.push(data.users[key]));
+                }
+
+                tripsDB = [];
+                if (data.trips) {
+                    Object.keys(data.trips).forEach(key => tripsDB.push(data.trips[key]));
+                    tripsDB.sort((a, b) => b.id - a.id);
+                }
+
+                partyDB = [];
+                if (data.parties) {
+                    Object.keys(data.parties).forEach(key => partyDB.push(data.parties[key]));
+                }
+
+                paymentsDB = [];
+                if (data.payments) {
+                    Object.keys(data.payments).forEach(key => paymentsDB.push(data.payments[key]));
+                }
+
+                if (callback) callback();
+            }).catch(err => {
+                console.error("Firebase sync error: ", err);
+                if (callback) callback();
+            });
+        }
+
+        function showView(viewName) {
+            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('lockedView').classList.add('hidden');
+            document.getElementById('lockoutView').classList.add('hidden');
+            document.getElementById('dashboardView').classList.add('hidden');
+            document.getElementById('adminView').classList.add('hidden');
+            document.getElementById('partyView').classList.add('hidden');
+            document.getElementById('contactView').classList.add('hidden');
+            document.getElementById('mapView').classList.add('hidden');
+            document.getElementById('mainHeader').classList.add('hidden');
+            document.getElementById('bottomNav').classList.add('hidden');
+            document.getElementById('adminNavBtn').classList.add('hidden');
+
+            if (viewName === 'auth') {
+                document.getElementById('authView').classList.remove('hidden');
+            } else if (viewName === 'locked') {
+                document.getElementById('lockedView').classList.remove('hidden');
+            } else if (viewName === 'lockout') {
+                document.getElementById('lockoutView').classList.remove('hidden');
+            } else {
+                if (currentUser && currentUser.phone !== ADMIN_PHONE) {
+                    document.getElementById('mainHeader').classList.remove('hidden');
+                    document.getElementById('bottomNav').classList.remove('hidden');
+                    loadVehicleInfo();
+                }
+
+                if(currentUser && currentUser.phone === ADMIN_PHONE) {
+                    document.getElementById('adminNavBtn').classList.remove('hidden');
+                    document.getElementById('bottomNav').classList.remove('hidden');
+                }
+
+                if (viewName === 'dashboard') {
+                    document.getElementById('dashboardView').classList.remove('hidden');
+                    renderTrips();
+                } else if (viewName === 'admin' && currentUser && currentUser.phone === ADMIN_PHONE) {
+                    document.getElementById('adminView').classList.remove('hidden');
+                    renderAdminPanel();
+                } else if (viewName === 'party') {
+                    document.getElementById('partyView').classList.remove('hidden');
+                    renderPartyDirectory();
+                } else if (viewName === 'contact') {
+                    document.getElementById('contactView').classList.remove('hidden');
+                    showContactTab('dist');
+                } else if (viewName === 'map') {
+                    document.getElementById('mapView').classList.remove('hidden');
+                } else {
+                    document.getElementById('dashboardView').classList.remove('hidden');
+                    renderTrips();
+                }
+            }
+        }
+
+        function navSwitch(target) {
+            fetchAllFirebaseData(() => {
+                showView(target);
+            });
+        }
+
+        function switchAuthTab(tab) {
+            if(tab === 'login') {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+                document.getElementById('tabLogin').className = "w-1/2 py-2 font-bold text-purple-800 border-b-2 border-purple-800";
+                document.getElementById('tabRegister').className = "w-1/2 py-2 font-bold text-gray-500";
+            } else {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.remove('hidden');
+                document.getElementById('tabRegister').className = "w-1/2 py-2 font-bold text-purple-800 border-b-2 border-purple-800";
+                document.getElementById('tabLogin').className = "w-1/2 py-2 font-bold text-gray-500";
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+
+            if (usersDB.find(u => u.phone === phone)) {
+                alert('এই ফোন নম্বর দিয়ে ইতিপূর্বে রেজিস্ট্রেশন করা হয়েছে!');
+                return;
+            }
+
+            const newUser = { name: name, phone: phone, pass: pass, regDate: new Date().getTime(), paidCycleStart: new Date().getTime() };
+            
+            db.ref('users/' + phone).set(newUser).then(() => {
+                usersDB.push(newUser);
+                currentUser = newUser;
+                localStorage.setItem('trip_current_user', JSON.stringify(currentUser));
+                alert('রেজিস্ট্রেশন সফল হয়েছে! ৫ দিন ফ্রি ট্রায়াল চালু হলো।');
+                checkSubscriptionAndRender();
+            }).catch(err => {
+                alert('রেজিস্ট্রেশন ব্যর্থ: ' + err.message);
+            });
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const phone = document.getElementById('loginPhone').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+
+            if (phone === ADMIN_PHONE && pass === ADMIN_PASS) {
+                currentUser = { name: "এডমিন (মুকুল)", phone: ADMIN_PHONE, regDate: new Date().getTime() };
+                localStorage.setItem('trip_current_user', JSON.stringify(currentUser));
+                showView('admin');
+                return;
+            }
+
+            fetchAllFirebaseData(() => {
+                const user = usersDB.find(u => u.phone === phone);
+                if (!user) {
+                    alert('এই নম্বর দিয়ে কোনো অ্যাকাউন্ট খোলা হয়নি!');
+                    return;
+                }
+
+                if (failedAttempts[phone] && failedAttempts[phone] >= 5) {
+                    showView('lockout');
+                    return;
+                }
+
+                if (user.pass === pass) {
+                    failedAttempts[phone] = 0;
+                    localStorage.setItem('trip_failed_attempts', JSON.stringify(failedAttempts));
+                    currentUser = user;
+                    localStorage.setItem('trip_current_user', JSON.stringify(currentUser));
+                    checkSubscriptionAndRender();
+                } else {
+                    failedAttempts[phone] = (failedAttempts[phone] || 0) + 1;
+                    localStorage.setItem('trip_failed_attempts', JSON.stringify(failedAttempts));
+                    const remaining = 5 - failedAttempts[phone];
+                    if (remaining <= 0) {
+                        showView('lockout');
+                    } else {
+                        alert(`ভুল পাসওয়ার্ড! আর ${remaining} বার ভুল করলে অ্যাকাউন্ট লক হয়ে যাবে।`);
+                    }
+                }
+            });
+        }
+
+        function checkSubscriptionAndRender() {
+            if (currentUser.phone === ADMIN_PHONE) {
+                showView('admin');
+                return;
+            }
+
+            const now = new Date().getTime();
+            const regTime = currentUser.regDate || now;
+            const daysPassed = (now - regTime) / (1000 * 60 * 60 * 24);
+
+            const userPayment = paymentsDB.find(p => p.phone === currentUser.phone && p.status === 'approved');
+
+            let isLocked = false;
+            if (daysPassed > 5) {
+                if (!userPayment) {
+                    isLocked = true;
+                } else {
+                    const lastPayTime = userPayment.approvalTime || currentUser.paidCycleStart || regTime;
+                    const daysSincePayment = (now - lastPayTime) / (1000 * 60 * 60 * 24);
+                    if (daysSincePayment > 30) {
+                        isLocked = true;
+                    }
+                }
+            }
+
+            if (isLocked) {
+                showView('locked');
+            } else {
+                showView('dashboard');
+            }
+        }
+
+        function submitPaymentVerification(e) {
+            e.preventDefault();
+            const senderNo = document.getElementById('paySenderNo').value.trim();
+            const trxId = document.getElementById('payTrxId').value.trim();
+            const paymentId = Date.now();
+
+            const newPayment = {
+                id: paymentId,
+                phone: currentUser.phone,
+                name: currentUser.name,
+                senderNo: senderNo,
+                trxId: trxId,
+                status: 'pending',
+                time: new Date().toLocaleString()
+            };
+
+            db.ref('payments/' + paymentId).set(newPayment).then(() => {
+                paymentsDB.push(newPayment);
+                alert('আপনার পেমেন্ট তথ্য সফলভাবে জমা দেওয়া হয়েছে! ভেরিফাই হতে প্রায় ২০ মিনিট সময় লাগবে।');
+                document.getElementById('paySenderNo').value = '';
+                document.getElementById('payTrxId').value = '';
+            }).catch(err => {
+                alert('পেমেন্ট সাবমিট ব্যর্থ: ' + err.message);
+            });
+        }
+
+        function approvePayment(paymentId) {
+            const pay = paymentsDB.find(p => p.id == paymentId);
+            if(pay) {
+                const approvalTime = new Date().getTime();
+                db.ref('payments/' + paymentId + '/status').set('approved').then(() => {
+                    return db.ref('payments/' + paymentId + '/approvalTime').set(approvalTime);
+                }).then(() => {
+                    pay.status = 'approved';
+                    pay.approvalTime = approvalTime;
+
+                    const user = usersDB.find(u => u.phone === pay.phone);
+                    if(user) {
+                        db.ref('users/' + user.phone + '/paidCycleStart').set(approvalTime);
+                        user.paidCycleStart = approvalTime;
+                    }
+                    renderAdminPanel();
+                    alert('পেমেন্ট অ্যাপ্রুভ করা হয়েছে! কাস্টমারের ১ মাসের মেয়াদ বৃদ্ধি পেয়েছে।');
+                }).catch(err => {
+                    alert('এরর: ' + err.message);
+                });
+            }
+        }
+
+        function adminResetPassword(phone) {
+            const newPass = prompt('কাস্টমারের জন্য নতুন ৪ সংখ্যার পাসওয়ার্ড দিন:');
+            if (newPass && newPass.length === 4) {
+                db.ref('users/' + phone + '/pass').set(newPass).then(() => {
+                    const user = usersDB.find(u => u.phone === phone);
+                    if (user) user.pass = newPass;
+                    failedAttempts[phone] = 0;
+                    localStorage.setItem('trip_failed_attempts', JSON.stringify(failedAttempts));
+                    alert('পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!');
+                    renderAdminPanel();
+                }).catch(err => {
+                    alert('এরর: ' + err.message);
+                });
+            } else {
+                alert('সঠিক ৪ সংখ্যার পাসওয়ার্ড দিন।');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('trip_current_user');
+            showView('auth');
+        }
+
+        function loadVehicleInfo() {
+            if (!currentUser) return;
+            const key = `veh_info_${currentUser.phone}`;
+            const info = JSON.parse(localStorage.getItem(key)) || {
+                carNo: "গাড়ি নং",
+                serial: "",
+                driver: "",
+                owner: ""
+            };
+
+            const badge = document.getElementById('headCarNoBadge');
+            const serial = document.getElementById('headSerial');
+            const driver = document.getElementById('headDriver');
+            const owner = document.getElementById('headOwner');
+
+            if(badge) badge.innerText = info.carNo || "গাড়ি নং";
+            if(serial) serial.innerText = info.serial || "তথ্য দিন...";
+            if(driver) driver.innerText = info.driver || "তথ্য দিন...";
+            if(owner) owner.innerText = info.owner || "তথ্য দিন...";
+        }
+
+        function openVehicleInfoModal() {
+            if(!currentUser) return;
+            const key = `veh_info_${currentUser.phone}`;
+            const info = JSON.parse(localStorage.getItem(key)) || { carNo: "", serial: "", driver: "", owner: "" };
+
+            document.getElementById('inputCarNo').value = info.carNo;
+            document.getElementById('inputSerial').value = info.serial;
+            document.getElementById('inputDriver').value = info.driver;
+            document.getElementById('inputOwner').value = info.owner;
+
+            document.getElementById('vehicleModal').classList.remove('hidden');
+        }
+
+        function closeVehicleInfoModal() {
+            document.getElementById('vehicleModal').classList.add('hidden');
+        }
+
+        function saveVehicleInfo(e) {
+            e.preventDefault();
+            const info = {
+                carNo: document.getElementById('inputCarNo').value,
+                serial: document.getElementById('inputSerial').value,
+                driver: document.getElementById('inputDriver').value,
+                owner: document.getElementById('inputOwner').value
+            };
+
+            const key = `veh_info_${currentUser.phone}`;
+            localStorage.setItem(key, JSON.stringify(info));
+            loadVehicleInfo();
+            closeVehicleInfoModal();
+        }
+
+        function saveTrip(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editTripId').value;
+            const date = document.getElementById('tripDate').value;
+            const route = document.getElementById('tripRoute').value;
+            const rent = parseFloat(document.getElementById('tripRent').value) || 0;
+            const fuel = parseFloat(document.getElementById('costFuel').value) || 0;
+            const toll = parseFloat(document.getElementById('costToll').value) || 0;
+            const driver = parseFloat(document.getElementById('costDriver').value) || 0;
+            const police = parseFloat(document.getElementById('costPolice').value) || 0;
+            const labor = parseFloat(document.getElementById('costLabor').value) || 0;
+            const others = parseFloat(document.getElementById('costOthers').value) || 0;
+
+            const totalCost = fuel + toll + driver + police + labor + others;
+            const netProfit = rent - totalCost;
+
+            const tripId = editId ? editId : Date.now();
+            const tripData = {
+                id: tripId,
+                userPhone: currentUser.phone,
+                date, route, rent, fuel, toll, driver, police, labor, others,
+                cost: totalCost, profit: netProfit
+            };
+
+            db.ref('trips/' + tripId).set(tripData).then(() => {
+                fetchAllFirebaseData(() => {
+                    resetForm();
+                    if (currentUser.phone === ADMIN_PHONE) {
+                        renderAdminPanel();
+                    } else {
+                        renderTrips();
+                    }
+                });
+            }).catch(err => {
+                alert('হিসাব সেভ ব্যর্থ: ' + err.message);
+            });
+        }
+
+        function editTrip(id) {
+            const trip = tripsDB.find(t => t.id == id);
+            if (!trip) return;
+
+            document.getElementById('editTripId').value = trip.id;
+            document.getElementById('tripDate').value = trip.date;
+            document.getElementById('tripRoute').value = trip.route;
+            document.getElementById('tripRent').value = trip.rent;
+            document.getElementById('costFuel').value = trip.fuel || '';
+            document.getElementById('costToll').value = trip.toll || '';
+            document.getElementById('costDriver').value = trip.driver || '';
+            document.getElementById('costPolice').value = trip.police || '';
+            document.getElementById('costLabor').value = trip.labor || '';
+            document.getElementById('costOthers').value = trip.others || '';
+
+            document.getElementById('formTitle').innerHTML = `<span><i class="fa-solid fa-pen-to-square text-amber-600"></i> হিসাব এডিট করুন</span>`;
+            document.getElementById('saveBtn').innerText = 'আপডেট করুন';
+            document.getElementById('saveBtn').className = 'flex-1 bg-amber-600 text-white font-bold py-2.5 rounded shadow';
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('editTripId').value = '';
+            document.getElementById('tripForm').reset();
+            document.getElementById('tripDate').valueAsDate = new Date();
+            document.getElementById('formTitle').innerHTML = `<span><i class="fa-solid fa-plus-circle text-purple-700"></i> নতুন হিসাব যোগ করুন</span>`;
+            document.getElementById('saveBtn').innerText = 'সেভ করুন';
+            document.getElementById('saveBtn').className = 'flex-1 bg-purple-700 text-white font-bold py-2.5 rounded shadow';
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        }
+
+        function renderTrips() {
+            if(!currentUser) return;
+            const userTrips = tripsDB.filter(t => t.userPhone === currentUser.phone);
+            const listContainer = document.getElementById('tripList');
+            if(!listContainer) return;
+            listContainer.innerHTML = '';
+
+            let totalRent = 0, totalCost = 0, totalProfit = 0;
+
+            userTrips.forEach(trip => {
+                totalRent += trip.rent;
+                totalCost += trip.cost;
+                totalProfit += trip.profit;
+
+                listContainer.innerHTML += `
+                    <div class="bg-white border border-gray-200 rounded p-3 text-xs shadow-sm flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-purple-900">${trip.route}</p>
+                            <p class="text-gray-500">${trip.date}</p>
+                            <div class="mt-1 space-x-2">
+                                <span class="text-green-600 font-semibold">ভাড়া: ৳${trip.rent}</span>
+                                <span class="text-red-500">খরচ: ৳${trip.cost}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="block font-bold text-blue-700">লাভ: ৳${trip.profit}</span>
+                            <div class="mt-1 space-x-2">
+                                <button onclick="editTrip(${trip.id})" class="text-amber-600 hover:underline font-semibold"><i class="fa-solid fa-pen-to-square"></i> এডিট</button>
+                                <button onclick="deleteTrip(${trip.id})" class="text-red-600 hover:underline"><i class="fa-solid fa-trash"></i> ডিলিট</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('sumTotalRent').innerText = `৳ ${totalRent}`;
+            document.getElementById('sumTotalCost').innerText = `৳ ${totalCost}`;
+            document.getElementById('sumNetProfit').innerText = `৳ ${totalProfit}`;
+            document.getElementById('sumTotalTrips').innerText = `${userTrips.length} টি`;
+        }
+
+        function deleteTrip(id) {
+            if (confirm('আপনি কি এই হিসাবটি মুছে ফেলতে চান?')) {
+                db.ref('trips/' + id).remove().then(() => {
+                    fetchAllFirebaseData(() => {
+                        if (currentUser && currentUser.phone === ADMIN_PHONE) {
+                            renderAdminPanel();
+                        } else {
+                            renderTrips();
+                        }
+                    });
+                }).catch(err => {
+                    alert('মুছে ফেলতে ব্যর্থ: ' + err.message);
+                });
+            }
+        }
+
+        // Party Management Logic
+        function openPartyModal(id = null) {
+            if(id) {
+                const party = partyDB.find(p => p.id == id);
+                if(party) {
+                    document.getElementById('editPartyId').value = party.id;
+                    document.getElementById('partyName').value = party.name;
+                    document.getElementById('partyPhone').value = party.phone;
+                    document.getElementById('partyAddress').value = party.address || '';
+                    document.getElementById('partyModalTitle').innerText = 'পার্টির তথ্য এডিট করুন';
+                }
+            } else {
+                document.getElementById('editPartyId').value = '';
+                document.getElementById('partyName').value = '';
+                document.getElementById('partyPhone').value = '';
+                document.getElementById('partyAddress').value = '';
+                document.getElementById('partyModalTitle').innerText = 'নতুন পার্টি যোগ করুন';
+            }
+            document.getElementById('partyModal').classList.remove('hidden');
+        }
+
+        function closePartyModal() {
+            document.getElementById('partyModal').classList.add('hidden');
+        }
+
+        function savePartyContact(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editPartyId').value;
+            const name = document.getElementById('partyName').value.trim();
+            const phone = document.getElementById('partyPhone').value.trim();
+            const address = document.getElementById('partyAddress').value.trim();
+
+            const partyId = editId ? editId : Date.now();
+            const partyData = {
+                id: partyId,
+                userPhone: currentUser.phone,
+                name, phone, address
+            };
+
+            db.ref('parties/' + partyId).set(partyData).then(() => {
+                fetchAllFirebaseData(() => {
+                    closePartyModal();
+                    renderPartyDirectory();
+                });
+            }).catch(err => {
+                alert('পার্টির তথ্য সেভ ব্যর্থ: ' + err.message);
+            });
+        }
+
+        function deletePartyContact(id) {
+            if (confirm('আপনি কি এই পার্টির তথ্যটি মুছে ফেলতে চান?')) {
+                db.ref('parties/' + id).remove().then(() => {
+                    fetchAllFirebaseData(() => {
+                        renderPartyDirectory();
+                    });
+                });
+            }
+        }
+
+        function renderPartyDirectory() {
+            if(!currentUser) return;
+            const container = document.getElementById('partyDirectoryList');
+            if(!container) return;
+            const myParties = partyDB.filter(p => p.userPhone === currentUser.phone);
+
+            container.innerHTML = '';
+            if (myParties.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-center py-6 text-xs">কোন পার্টির নাম্বার সেভ করা নেই। ওপরের বাটনে চাপুন।</p>`;
+                return;
+            }
+
+            myParties.forEach(p => {
+                container.innerHTML += `
+                    <div class="bg-white border p-2.5 rounded-md flex justify-between items-center text-xs shadow-sm">
+                        <div>
+                            <strong class="text-gray-900 font-bold block text-sm">${p.name}</strong>
+                            <span class="text-purple-700 font-semibold block mt-0.5"><i class="fa-solid fa-phone"></i> ${p.phone}</span>
+                            ${p.address ? `<p class="text-gray-500 text-[11px] mt-0.5"><i class="fa-solid fa-location-dot"></i> ${p.address}</p>` : ''}
+                        </div>
+                        <div class="space-x-1">
+                            <button onclick="openPartyModal(${p.id})" class="bg-amber-100 text-amber-800 font-bold px-2 py-1 rounded hover:bg-amber-200"><i class="fa-solid fa-pen"></i> এডিট</button>
+                            <button onclick="deletePartyContact(${p.id})" class="bg-red-100 text-red-600 font-bold px-2 py-1 rounded hover:bg-red-200"><i class="fa-solid fa-trash"></i> ডিলিট</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Contact & Emergency Tab Logic
+        function showContactTab(cat) {
+            const container = document.getElementById('contactTabContent');
+            const searchBox = document.getElementById('districtSearchBox');
+            if(!container || !searchBox) return;
+
+            if (cat === 'dist') {
+                searchBox.classList.remove('hidden');
+                renderDistrictList(DISTRICTS_DATA);
+            } else {
+                searchBox.classList.add('hidden');
+                if (cat === 'police') {
+                    container.innerHTML = `
+                        <h4 class="font-bold text-blue-900 border-b pb-1 mb-2">জরুরী পুলিশ কন্ট্রোল রুম (৪ জন কর্মকর্তা)</h4>
+                        <p class="py-1">জাতীয় জরুরী সেবা: <strong>999</strong></p>
+                        <p class="py-1">ডিআইজি হাইওয়ে পুলিশ: <strong>01320-000001</strong></p>
+                        <p class="py-1">এসপি হাইওয়ে (পূর্বঞ্চল): <strong>01713-333444</strong></p>
+                        <p class="py-1">টাঙ্গাইল ট্রাফিক কন্ট্রোল: <strong>01712-555666</strong></p>
+                        <p class="py-1">ঢাকা মেট্রোপলিটন পুলিশ কন্ট্রোল: <strong>02-223388111</strong></p>
+                    `;
+                } else if (cat === 'fire') {
+                    container.innerHTML = `
+                        <h4 class="font-bold text-red-900 border-b pb-1 mb-2">ফায়ার সার্ভিস স্টেশন</h4>
+                        <p class="py-1">ফায়ার সার্ভিস হেডকোয়ার্টার কন্ট্রোল: <strong>02-223355555</strong></p>
+                        <p class="py-1">জরুরী রেসকিউ হটলাইন: <strong>999</strong></p>
+                        <p class="py-1">টাঙ্গাইল ফায়ার স্টেশন: <strong>01711-223344</strong></p>
+                    `;
+                } else if (cat === 'hospital') {
+                    container.innerHTML = `
+                        <h4 class="font-bold text-green-900 border-b pb-1 mb-2">জরুরী হাসপাতাল কন্টাক্ট</h4>
+                        <p class="py-1">ঢাকা মেডিকেল কলেজ হাসপাতাল: <strong>02-55165088</strong></p>
+                        <p class="py-1">টাঙ্গাইল জেনারেল হাসপাতাল: <strong>01700-000000</strong></p>
+                        <p class="py-1">জাতীয় অর্থোপেডিক (পঙ্গু) হাসপাতাল: <strong>02-9112555</strong></p>
+                    `;
+                }
+            }
+        }
+
+        function renderDistrictList(list) {
+            const container = document.getElementById('contactTabContent');
+            if(!container) return;
+            container.innerHTML = `
+                <h4 class="font-bold text-purple-900 border-b pb-1 mb-2">ঢাকা থেকে ৬৪ জেলার দূরত্ব (মোট: ${list.length}টি)</h4>
+                <ul class="space-y-1">
+                    ${list.map(d => `
+                        <li class="flex justify-between border-b py-1 text-xs">
+                            <span>ঢাকা - <strong>${d.name}</strong></span> 
+                            <strong class="text-purple-700">${d.dist}</strong>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+        }
+
+        function filterDistricts() {
+            const searchInput = document.getElementById('distSearch');
+            if(!searchInput) return;
+            const query = searchInput.value.trim().toLowerCase();
+            const filtered = DISTRICTS_DATA.filter(d => d.name.toLowerCase().includes(query));
+            renderDistrictList(filtered);
+        }
+
+        function renderAdminPanel() {
+            fetchAllFirebaseData(() => {
+                const adminContainer = document.getElementById('adminUserList');
+                const totalCarsBadge = document.getElementById('adminTotalCarsCount');
+                const unpaidBadge = document.getElementById('adminUnpaidCount');
+                if(!adminContainer) return;
+                adminContainer.innerHTML = '';
+
+                let unpaidCount = 0;
+                const now = new Date().getTime();
+
+                usersDB.forEach(user => {
+                    const regTime = user.regDate || now;
+                    const daysPassed = (now - regTime) / (1000 * 60 * 60 * 24);
+                    const userPayment = paymentsDB.find(p => p.phone === user.phone && p.status === 'approved');
+                    let isUnpaid = false;
+                    if (daysPassed > 5) {
+                        if (!userPayment) isUnpaid = true;
+                        else {
+                            const lastPayTime = userPayment.approvalTime || user.paidCycleStart || regTime;
+                            if ((now - lastPayTime) / (1000 * 60 * 60 * 24) > 30) isUnpaid = true;
+                        }
+                    }
+                    if (isUnpaid) unpaidCount++;
+                });
+
+                if (totalCarsBadge) totalCarsBadge.innerText = usersDB.length;
+                if (unpaidBadge) unpaidBadge.innerText = unpaidCount;
+
+                if (usersDB.length === 0) {
+                    adminContainer.innerHTML = `<p class="text-xs text-gray-500">কোন কাস্টমার বা গাড়ি নিবন্ধিত নেই।</p>`;
+                    return;
+                }
+
+                usersDB.forEach(user => {
+                    const userTrips = tripsDB.filter(t => t.userPhone === user.phone);
+                    const vehInfo = JSON.parse(localStorage.getItem(`veh_info_${user.phone}`)) || { carNo: "নেই", serial: "নেই", owner: "তথ্য নেই" };
+                    const regTime = user.regDate || now;
+                    const daysPassed = (now - regTime) / (1000 * 60 * 60 * 24);
+                    const userPayment = paymentsDB.find(p => p.phone === user.phone && p.status === 'approved');
+                    let isUnpaid = false;
+                    if (daysPassed > 5) {
+                        if (!userPayment) isUnpaid = true;
+                        else {
+                            const lastPayTime = userPayment.approvalTime || user.paidCycleStart || regTime;
+                            if ((now - lastPayTime) / (1000 * 60 * 60 * 24) > 30) isUnpaid = true;
+                        }
+                    }
+                    const totalRent = userTrips.reduce((sum, t) => sum + t.rent, 0);
+                    const pendingPay = paymentsDB.find(p => p.phone === user.phone && p.status === 'pending');
+                    const isLockedOut = (failedAttempts[user.phone] || 0) >= 5;
+
+                    adminContainer.innerHTML += `
+                        <div class="bg-white border rounded p-3 shadow-sm text-xs space-y-2">
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <div>
+                                    <strong class="text-purple-900 text-sm font-bold">${user.name}</strong> (${user.phone})
+                                    <p class="text-[11px] text-gray-600 mt-0.5">গাড়ি নম্বর/সিরিয়াল: <strong class="text-blue-800">${vehInfo.carNo} - ${vehInfo.serial}</strong></p>
+                                    <p class="text-[11px] text-gray-600">মালিকের নাম: <strong class="text-green-800">${vehInfo.owner}</strong></p>
+                                    <p class="text-[11px] mt-0.5">স্ট্যাটাস: <strong class="${isUnpaid ? 'text-red-600' : 'text-green-600'}">${isUnpaid ? 'মেয়াদ শেষ / ২০ টাকা বকেয়া' : 'সক্রিয় / পেমেন্টকৃত'}</strong></p>
+                                    ${isLockedOut ? `<p class="text-[11px] text-red-600 font-bold mt-1">⚠️ ৫ বার ভুল পাসওয়ার্ড দেওয়ায় লক! <button onclick="adminResetPassword('${user.phone}')" class="bg-blue-600 text-white px-1.5 py-0.5 rounded ml-1">পাসওয়ার্ড রিসেট করুন</button></p>` : ''}
+                                    ${pendingPay ? `<p class="text-[11px] text-amber-600 font-bold mt-1">পেমেন্ট রিকোয়েস্ট: (${pendingPay.senderNo}), TrxID: (${pendingPay.trxId}) <button onclick="approvePayment(${pendingPay.id})" class="bg-green-600 text-white px-1.5 py-0.5 rounded ml-1">অ্যাপ্রুভ (১ মাস বাড়ান)</button></p>` : ''}
+                                </div>
+                                <div class="text-right">
+                                    <span class="bg-purple-100 text-purple-900 text-[11px] font-bold px-2 py-1 rounded block mb-1">মোট ট্রিপ: ${userTrips.length} টি</span>
+                                    <span class="bg-green-100 text-green-800 text-[11px] font-bold px-2 py-1 rounded block">মোট আয়: ৳${totalRent}</span>
+                                    <button onclick="adminResetPassword('${user.phone}')" class="mt-2 bg-amber-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">পাসওয়ার্ড রিসেট</button>
+                                </div>
+                            </div>
+                            <div class="space-y-1 bg-gray-50 p-2 rounded">
+                                <p class="font-bold text-gray-700">কাস্টমারের ট্রিপসমূহ (বাতিল করার সুবিধা):</p>
+                                ${userTrips.length === 0 ? '<p class="text-gray-400 text-[10px]">কোন ট্রিপ এন্ট্রি নেই</p>' : ''}
+                                ${userTrips.map(t => `
+                                    <div class="flex justify-between items-center text-[11px] border-b border-gray-200 py-1">
+                                        <span>${t.date} | ${t.route} | <strong class="text-green-700">৳${t.rent}</strong></span>
+                                        <button onclick="deleteTrip(${t.id})" class="bg-red-500 text-white font-bold px-2 py-0.5 rounded text-[10px] hover:bg-red-600">
+                                            <i class="fa-solid fa-trash"></i> বাতিল
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
