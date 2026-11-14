@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>টিপের হিসাব - TRIP Hisab</title>
+    <title>টিপের হিসাব - TRIP Hisab & Financial Services</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -31,7 +31,6 @@
 
         <!-- Header Screen (Logged In Customer) -->
         <header id="mainHeader" class="hidden">
-            <!-- Header Section 1: Purple Header -->
             <div class="purple-bg text-white p-3 text-center relative shadow-md">
                 <div class="flex items-center justify-center space-x-2">
                     <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1 border-2 border-yellow-400">
@@ -42,15 +41,13 @@
                     </div>
                 </div>
                 <span id="headCarNoBadge" class="absolute top-2 right-2 text-[10px] bg-yellow-400 text-purple-900 font-bold px-2 py-0.5 rounded-full">গাড়ি নং</span>
-                <button onclick="logout()" class="absolute top-2 left-2 text-[10px] bg-red-500 text-white px-2 py-1 rounded shadow font-bold">লগআউট</button>
+                <button type="button" onclick="logout()" class="absolute top-2 left-2 text-[10px] bg-red-500 text-white px-2 py-1 rounded shadow font-bold">লগআউট</button>
             </div>
 
-            <!-- Header Section 2: Blue Editable Vehicle Info Header -->
             <div class="blue-bg text-white p-2.5 text-[11px] space-y-1 relative">
-                <button onclick="openVehicleInfoModal()" class="absolute top-2 right-2 bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded hover:bg-amber-600 font-bold">
+                <button type="button" onclick="openVehicleInfoModal()" class="absolute top-2 right-2 bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded hover:bg-amber-600 font-bold">
                     <i class="fa-solid fa-pen-to-square"></i> তথ্য এডিট
                 </button>
-
                 <div class="flex justify-between items-center border-b border-blue-700 pb-0.5 pr-16">
                     <span><i class="fa-solid fa-truck"></i> গাড়ির সিরিয়াল ও নম্বর: <strong id="headSerial">তথ্য দিন...</strong></span>
                 </div>
@@ -72,62 +69,73 @@
                     <div class="w-24 h-24 purple-bg text-white rounded-full flex items-center justify-center mx-auto mb-2 border-4 border-yellow-400 shadow-lg">
                         <i class="fa-solid fa-truck-moving text-4xl"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-purple-900">টিপের হিসাব</h2>
-                    <p class="text-xs text-gray-500">আপনার ট্রিপ ও পরিবহন খরচের বিশ্বস্ত হিসাব</p>
-                    <p class="text-[11px] text-purple-700 font-bold mt-1">⚠️ ৫ দিন ফ্রি ট্রায়াল! এরপর প্রতি মাসে মাত্র ২০ টাকা চার্জ প্রযোজ্য।</p>
+                    <h2 class="text-2xl font-bold text-purple-900">টিপের হিসাব ও ফাইন্যান্স</h2>
+                    <p class="text-xs text-gray-500">ট্রিপ, লোন, ফ্লেক্সিলোড ও পরিবহন খরচের বিশ্বস্ত হিসাব</p>
+                    <p class="text-[11px] text-purple-700 font-bold mt-1">⚠️ প্রথম ৫ দিন ফ্রি ট্রায়াল! এরপর প্রতি মাসে মাত্র ২০ টাকা চার্জ প্রযোজ্য।</p>
                 </div>
 
                 <div class="bg-purple-50 p-4 rounded-xl border border-purple-200 shadow-sm">
                     <div class="flex border-b border-purple-200 mb-4">
-                        <button id="tabLogin" onclick="switchAuthTab('login')" class="w-1/2 py-2 font-bold text-purple-800 border-b-2 border-purple-800">লগইন</button>
-                        <button id="tabRegister" onclick="switchAuthTab('register')" class="w-1/2 py-2 font-bold text-gray-500">রেজিস্ট্রেশন</button>
+                        <button type="button" id="tabLogin" onclick="switchAuthTab('login')" class="w-1/2 py-2 font-bold text-gray-500">লগইন</button>
+                        <button type="button" id="tabRegister" onclick="switchAuthTab('register')" class="w-1/2 py-2 font-bold text-purple-800 border-b-2 border-purple-800">রেজিস্ট্রেশন</button>
                     </div>
 
                     <!-- Login Form -->
-                    <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3">
+                    <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 hidden">
                         <div>
                             <label class="block text-xs font-bold text-gray-700 mb-1">মোবাইল নাম্বার</label>
-                            <input type="tel" id="loginPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                            <input type="tel" id="loginPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded text-sm outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">৪ সংখ্যার পাসওয়ার্ড</label>
-                            <input type="password" id="loginPass" maxlength="4" required placeholder="****" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                            <label class="block text-xs font-bold text-gray-700 mb-1">৪ সংখ্যার পাসওয়ার্ড (পিন)</label>
+                            <input type="password" id="loginPass" maxlength="4" required placeholder="****" class="w-full p-2 border rounded text-sm outline-none">
                         </div>
-                        <button type="submit" class="w-full purple-bg text-white py-2 rounded font-bold shadow hover:bg-purple-900 transition">লগইন করুন</button>
+                        
+                        <div class="flex items-center justify-between text-xs pt-1">
+                            <label class="flex items-center space-x-1 cursor-pointer">
+                                <input type="checkbox" id="rememberMeCheck" class="rounded text-purple-600">
+                                <span>নম্বর ও পাসওয়ার্ড সেভ রাখুন</span>
+                            </label>
+                            <button type="button" onclick="loginWithBiometric()" class="text-purple-800 font-bold hover:underline">
+                                <i class="fa-solid fa-fingerprint text-base"></i> ফিঙ্গারপ্রিন্ট লগইন
+                            </button>
+                        </div>
+
+                        <button type="submit" id="loginSubmitBtn" class="w-full purple-bg text-white py-2.5 rounded font-bold shadow hover:bg-purple-900 transition">লগইন করুন</button>
                     </form>
 
                     <!-- Register Form -->
-                    <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 hidden">
+                    <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3">
                         <div>
                             <label class="block text-xs font-bold text-gray-700 mb-1">আপনার নাম</label>
-                            <input type="text" id="regName" required placeholder="আপনার নাম" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                            <input type="text" id="regName" required placeholder="আপনার নাম" class="w-full p-2 border rounded text-sm outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-700 mb-1">মোবাইল নাম্বার</label>
-                            <input type="tel" id="regPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                            <input type="tel" id="regPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded text-sm outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-700 mb-1">৪ সংখ্যার পিন/পাসওয়ার্ড</label>
-                            <input type="password" id="regPass" maxlength="4" required placeholder="****" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-purple-600 outline-none">
+                            <input type="password" id="regPass" maxlength="4" required placeholder="****" class="w-full p-2 border rounded text-sm outline-none">
                         </div>
-                        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-bold shadow hover:bg-green-700 transition">অ্যাকাউন্ট খুলুন (৫ দিন ফ্রি)</button>
+                        <button type="submit" class="w-full bg-green-600 text-white py-2.5 rounded font-bold shadow hover:bg-green-700 transition">রেজিস্ট্রেশন সম্পন্ন করুন (৫ দিন ফ্রি)</button>
                     </form>
                 </div>
             </div>
 
-            <!-- Password Lockout Screen (After 5 Wrong Attempts) -->
+            <!-- Password Lockout Screen -->
             <div id="lockoutView" class="hidden py-10 px-4 text-center">
                 <div class="bg-red-50 border-2 border-red-500 rounded-xl p-5 shadow-xl space-y-3">
                     <i class="fa-solid fa-triangle-exclamation text-4xl text-red-600"></i>
                     <h2 class="text-lg font-bold text-red-700">অ্যাকাউন্ট সিকিউরিটি লক!</h2>
-                    <p class="text-xs text-gray-700">টানা ৫ বার ভুল পাসওয়ার্ড দেওয়ার কারণে আপনার অ্যাকাউন্টটি সাময়িকভাবে লক করা হয়েছে। নতুন পাসওয়ার্ড সেট করতে এডমিনের সাথে যোগাযোগ করুন।</p>
-                    
+                    <p class="text-xs text-gray-700">টানা ৫ বার ভুল পাসওয়ার্ড দেওয়ার কারণে অ্যাকাউন্ট লক হয়েছে। এডমিন প্যানেল থেকে এটি আনলক করা যাবে।</p>
                     <div class="bg-white p-3 rounded border text-left space-y-1.5 shadow-inner text-xs">
-                        <p class="font-bold text-purple-900">এডমিনের সাথে যোগাযোগের নম্বর:</p>
-                        <p><i class="fa-brands fa-whatsapp text-green-600"></i> WhatsApp: <strong class="text-gray-900">01711-573501</strong></p>
-                        <p><i class="fa-solid fa-phone text-blue-600"></i> হেল্পলাইন: <strong class="text-gray-900">+880 9638-639227</strong></p>
+                        <p class="font-bold text-purple-900">অফিশিয়াল পেমেন্ট নম্বরসমূহ:</p>
+                        <p><i class="fa-solid fa-wallet text-pink-600"></i> বিকাশ/নগদ: <strong class="text-gray-900">01711-573501</strong></p>
+                        <p><i class="fa-solid fa-wallet text-purple-600"></i> রকেট এজেন্ট: <strong class="text-gray-900">01613-573627+3</strong></p>
+                        <p><i class="fa-solid fa-phone text-blue-600"></i>  নম্বর : <strong class="text-gray-900">09638-639227</strong></p>
                     </div>
-                    <button onclick="showView('auth')" class="w-full bg-gray-700 text-white py-2 rounded font-bold text-xs">লগইন পেজে ফিরে যান</button>
+                    <button type="button" onclick="showView('auth')" class="w-full bg-gray-700 text-white py-2 rounded font-bold text-xs">লগইন পেজে ফিরে যান</button>
                 </div>
             </div>
 
@@ -135,20 +143,20 @@
             <div id="lockedView" class="hidden py-6 px-3 text-center">
                 <div class="bg-red-50 border-2 border-red-500 rounded-xl p-4 shadow-lg space-y-3 text-xs">
                     <i class="fa-solid fa-lock text-4xl text-red-600"></i>
-                    <h2 class="text-base font-bold text-red-700">মেয়াদ শেষ! মাসিক ২০ টাকা পেমেন্ট করুন</h2>
-                    <p class="text-gray-600">আপনার ফ্রি ট্রায়াল অথবা আগের মাসের মেয়াদ শেষ হয়েছে। অ্যাপসটি চালু রাখতে প্রতি মাসে ২০ টাকা চার্জ পরিশোধ করুন।</p>
+                    <h2 class="text-base font-bold text-red-700">৫ দিন ফ্রি ট্রায়াল শেষ! মাসিক ২০ টাকা পেমেন্ট করুন</h2>
+                    <p class="text-gray-600">অ্যাপস নিয়মিত চালু রাখতে প্রতি মাসে ২০ টাকা পরিশোধ করুন অথবা এডমিনকে কল বা মেসেজ দিন।</p>
 
                     <div class="bg-white p-3 rounded border text-left space-y-1.5 shadow-inner">
-                        <p class="font-bold text-gray-800 border-b pb-1">পেমেন্ট করার মাধ্যম (ফি: ২০ টাকা):</p>
-                        <p><i class="fa-solid fa-mobile-screen text-purple-600"></i> রকেট এজেন্ট: <strong>01613-573627+3</strong></p>
-                        <p><i class="fa-solid fa-wallet text-pink-600"></i> বিকাশ/নগদ পার্সোনাল: <strong>01711-573501</strong></p>
+                        <p class="font-bold text-gray-800 border-b pb-1">পেমেন্ট ও যোগাযোগের মাধ্যম:</p>
+                        <p><i class="fa-solid fa-wallet text-pink-600"></i> বিকাশ/নগদ: <strong>01711-573501</strong></p>
+                        <p><i class="fa-solid fa-wallet text-purple-600"></i> রকেট এজেন্ট: <strong>01613-573627</strong></p>
+                        <p><i class="fa-solid fa-phone text-blue-600"></i> ব্রিলিয়ান্ট নম্বর (০৯ দিয়ে): <strong>09638-639227</strong></p>
                     </div>
 
-                    <!-- Payment Verification Form -->
                     <form onsubmit="submitPaymentVerification(event)" class="bg-white p-3 rounded border space-y-2 text-left">
-                        <p class="font-bold text-purple-900 text-[11px]">টাকা পাঠিয়ে নিচে তথ্য দিন (ভেরিফাই হতে ২০ মিনিট লাগবে):</p>
+                        <p class="font-bold text-purple-900 text-[11px]">২০ টাকা পাঠিয়ে নিচের তথ্য দিন:</p>
                         <div>
-                            <label class="block font-semibold text-[11px] mb-0.5">যে নম্বর থেকে টাকা পাঠিয়েছেন:</label>
+                            <label class="block font-semibold text-[11px] mb-0.5">যে নম্বর থেকে পাঠিয়েছেন:</label>
                             <input type="tel" id="paySenderNo" required placeholder="017XXXXXXXX" class="w-full p-1.5 border rounded text-xs outline-none">
                         </div>
                         <div>
@@ -157,103 +165,240 @@
                         </div>
                         <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700 transition">পেমেন্ট সাবমিট করুন</button>
                     </form>
-
-                    <div class="border-t pt-2 text-[11px] space-y-1 text-left bg-purple-50 p-2 rounded">
-                        <p class="font-bold text-purple-900">আমাদের সাথে যোগাযোগ:</p>
-                        <p><i class="fa-brands fa-whatsapp text-green-600"></i> WhatsApp: <strong class="text-gray-800">01711-573501</strong></p>
-                        <p><i class="fa-solid fa-phone text-blue-600"></i> হেল্পলাইন: <strong class="text-gray-800">+880 9638-639227</strong></p>
-                    </div>
-
-                    <button onclick="logout()" class="w-full bg-gray-700 text-white py-2 rounded font-bold">লগআউট করুন</button>
+                    <button type="button" onclick="logout()" class="w-full bg-gray-700 text-white py-2 rounded font-bold">লগআউট করুন</button>
                 </div>
             </div>
 
-            <!-- Customer Trip Dashboard -->
+            <!-- Customer Main Dashboard -->
             <div id="dashboardView" class="hidden space-y-4">
-                <div class="watermark border-2 border-purple-200 rounded-lg p-3 shadow-sm">
-                    <div class="grid grid-cols-2 gap-2 text-center text-sm font-bold">
-                        <div class="bg-white/80 p-2 rounded border border-purple-300">
-                            <span class="text-gray-600 block text-xs">মোট আয়:</span>
-                            <span id="sumTotalRent" class="text-green-600">৳ 0</span>
+                <div class="bg-amber-50 border border-amber-300 p-2.5 rounded-lg shadow-sm space-y-1 text-xs">
+                    <p class="font-bold text-amber-900"><i class="fa-solid fa-circle-info"></i> অফিশিয়াল পেমেন্ট ও ব্রিলিয়ান্ট নম্বর:</p>
+                    <p>বিকাশ/নগদ: <strong class="text-purple-800">01711-573501</strong></p>
+                    <p>রকেট এজেন্ট: <strong class="text-purple-800">01613-573627</strong></p>
+                    <p>ব্রিলিয়ান্ট নম্বর (০৯ দিয়ে): <strong class="text-blue-800 text-sm">09638-639227</strong></p>
+                </div>
+
+                <div class="flex border-b border-gray-300 bg-white rounded-t shadow-sm text-xs">
+                    <button type="button" onclick="switchMainTab('trip')" id="mainTabTrip" class="w-1/3 py-2.5 font-bold text-purple-900 border-b-2 border-purple-900">টিপ হিসাব</button>
+                    <button type="button" onclick="switchMainTab('loan')" id="mainTabLoan" class="w-1/3 py-2.5 font-bold text-gray-500">লোন আবেদন</button>
+                    <button type="button" onclick="switchMainTab('recharge')" id="mainTabRecharge" class="w-1/3 py-2.5 font-bold text-gray-500">ফ্লেক্সিলোড</button>
+                </div>
+
+                <!-- Section 1: Trip Calculation Tab -->
+                <div id="subViewTrip" class="space-y-4">
+                    <div class="watermark border-2 border-purple-200 rounded-lg p-3 shadow-sm">
+                        <div class="grid grid-cols-2 gap-2 text-center text-sm font-bold">
+                            <div class="bg-white/80 p-2 rounded border border-purple-300">
+                                <span class="text-gray-600 block text-xs">মোট আয়:</span>
+                                <span id="sumTotalRent" class="text-green-600">৳ 0</span>
+                            </div>
+                            <div class="bg-white/80 p-2 rounded border border-purple-300">
+                                <span class="text-gray-600 block text-xs">মোট খরচ:</span>
+                                <span id="sumTotalCost" class="text-red-600">৳ 0</span>
+                            </div>
+                            <div class="bg-white/80 p-2 rounded border border-purple-300">
+                                <span class="text-gray-600 block text-xs">মালিকের নিট লাভ:</span>
+                                <span id="sumNetProfit" class="text-blue-600">৳ 0</span>
+                            </div>
+                            <div class="bg-white/80 p-2 rounded border border-purple-300">
+                                <span class="text-gray-600 block text-xs">মোট ট্রিপ:</span>
+                                <span id="sumTotalTrips" class="text-purple-600">0 টি</span>
+                            </div>
                         </div>
-                        <div class="bg-white/80 p-2 rounded border border-purple-300">
-                            <span class="text-gray-600 block text-xs">মোট খরচ:</span>
-                            <span id="sumTotalCost" class="text-red-600">৳ 0</span>
-                        </div>
-                        <div class="bg-white/80 p-2 rounded border border-purple-300">
-                            <span class="text-gray-600 block text-xs">মালিকের নিট লাভ:</span>
-                            <span id="sumNetProfit" class="text-blue-600">৳ 0</span>
-                        </div>
-                        <div class="bg-white/80 p-2 rounded border border-purple-300">
-                            <span class="text-gray-600 block text-xs">মোট ট্রিপ:</span>
-                            <span id="sumTotalTrips" class="text-purple-600">0 টি</span>
-                        </div>
+                    </div>
+
+                    <div class="bg-white border rounded-lg shadow-sm p-4 text-xs">
+                        <h3 id="formTitle" class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center justify-between">
+                            <span><i class="fa-solid fa-plus-circle text-purple-700"></i> নতুন হিসাব যোগ করুন</span>
+                            <span class="text-xs text-gray-400 font-normal">তারিখ অটো থাকবে</span>
+                        </h3>
+
+                        <form id="tripForm" onsubmit="saveTrip(event)" class="space-y-3">
+                            <input type="hidden" id="editTripId" value="">
+                            <div>
+                                <label class="font-semibold block mb-1">তারিখ</label>
+                                <input type="date" id="tripDate" required class="w-full p-2 border rounded outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold block mb-1">রুট / বিস্তারিত</label>
+                                <input type="text" id="tripRoute" placeholder="যেমন: ঢাকা থেকে টাঙ্গাইল" required class="w-full p-2 border rounded outline-none">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="font-semibold block mb-1">মোট ভাড়া (৳)</label>
+                                    <input type="number" id="tripRent" required placeholder="0" class="w-full p-2 border rounded font-bold text-green-700 outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-semibold block mb-1">জ্বালানি খরচ (তেল/গ্যাস)</label>
+                                    <input type="number" id="costFuel" placeholder="0" class="w-full p-2 border rounded outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-semibold block mb-1">টোল খরচ</label>
+                                    <input type="number" id="costToll" placeholder="0" class="w-full p-2 border rounded outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-semibold block mb-1">ড্রাইভার/হেলপার খোরাকি</label>
+                                    <input type="number" id="costDriver" placeholder="0" class="w-full p-2 border rounded outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-semibold block mb-1">পুলিশ খরচ</label>
+                                    <input type="number" id="costPolice" placeholder="0" class="w-full p-2 border rounded outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-semibold block mb-1">পৌরসভা / শ্রমিক</label>
+                                    <input type="number" id="costLabor" placeholder="0" class="w-full p-2 border rounded outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="font-semibold block mb-1">অন্যান্য খরচ</label>
+                                <input type="number" id="costOthers" placeholder="0" class="w-full p-2 border rounded outline-none">
+                            </div>
+                            <div class="flex space-x-2">
+                                <button type="submit" id="saveBtn" class="flex-1 bg-purple-700 text-white font-bold py-2.5 rounded shadow hover:bg-purple-800 transition">সেভ করুন</button>
+                                <button type="button" id="cancelEditBtn" onclick="resetForm()" class="hidden bg-gray-500 text-white font-bold px-4 py-2.5 rounded shadow">বাতিল</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        <h3 class="font-bold text-sm text-gray-700">আমার আগের হিসাবসমূহ:</h3>
+                        <div id="tripList" class="space-y-2"></div>
                     </div>
                 </div>
 
-                <!-- Add / Edit Trip Form -->
-                <div class="bg-white border rounded-lg shadow-sm p-4">
-                    <h3 id="formTitle" class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center justify-between">
-                        <span><i class="fa-solid fa-plus-circle text-purple-700"></i> নতুন হিসাব যোগ করুন</span>
-                        <span class="text-xs text-gray-400 font-normal">তারিখ অটো থাকবে</span>
-                    </h3>
-
-                    <form id="tripForm" onsubmit="saveTrip(event)" class="space-y-3 text-xs">
-                        <input type="hidden" id="editTripId" value="">
-
+                <!-- Section 2: Loan Application Tab & Live Status -->
+                <div id="subViewLoan" class="space-y-3 text-xs hidden">
+                    <form id="loanForm" onsubmit="submitLoanApplication(event)" class="space-y-2.5 bg-white p-3.5 rounded border shadow-sm">
+                        <h4 class="font-bold text-purple-900 border-b pb-1.5"><i class="fa-solid fa-hand-holding-dollar"></i> লোন আবেদন ফরম (৫০০৳ থেকে ১০০০৳)</h4>
+                        <p class="text-red-600 font-bold">⚠️ শর্ত: ৫০০ টাকায় ৩০ টাকা এবং ১০০০ টাকায় ৫০ টাকা সার্ভিস চার্জ। ৭ দিনের মধ্যে বাধ্যতামূলক পরিশোধ করতে হবে।</p>
+                        
                         <div>
-                            <label class="font-semibold block mb-1">তারিখ</label>
-                            <input type="date" id="tripDate" required class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                            <label class="font-semibold block mb-0.5">পূর্ণ নাম:</label>
+                            <input type="text" id="loanName" required placeholder="আপনার নাম" class="w-full p-2 border rounded outline-none">
                         </div>
                         <div>
-                            <label class="font-semibold block mb-1">রুট / বিস্তারিত</label>
-                            <input type="text" id="tripRoute" placeholder="যেমন: ঢাকা থেকে টাঙ্গাইল" required class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                            <label class="font-semibold block mb-0.5">নিজের মোবাইল নম্বর:</label>
+                            <input type="tel" id="loanPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded outline-none">
                         </div>
-
                         <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="font-semibold block mb-1">মোট ভাড়া (৳)</label>
-                                <input type="number" id="tripRent" required placeholder="0" class="w-full p-2 border rounded font-bold text-green-700 outline-none">
+                                <label class="font-semibold block mb-0.5">পরিবারের সদস্যের নাম:</label>
+                                <input type="text" id="loanFamilyName" required placeholder="নাম" class="w-full p-2 border rounded outline-none">
                             </div>
                             <div>
-                                <label class="font-semibold block mb-1">জ্বালানি খরচ (তেল/গ্যাস)</label>
-                                <input type="number" id="costFuel" placeholder="0" class="w-full p-2 border rounded outline-none">
+                                <label class="font-semibold block mb-0.5">সদস্যের ফোন নম্বর:</label>
+                                <input type="tel" id="loanFamilyPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="font-semibold block mb-0.5">লোনের পরিমাণ (৫০০৳ - ১০০০৳):</label>
+                            <input type="number" id="loanAmount" min="500" max="1000" oninput="calculateLoanTotal()" required placeholder="টাকার পরিমাণ" class="w-full p-2 border rounded font-bold text-green-700 outline-none">
+                        </div>
+                        <div id="loanCalculationPreview" class="bg-amber-50 p-2 rounded border border-amber-200 text-amber-900 font-bold">
+                            সার্ভিস চার্জ ও মোট প্রদেয়: পরিমাণ লিখুন...
+                        </div>
+                        <div>
+                            <label class="font-semibold block mb-0.5">টাকা কোন মাধ্যমে নিবেন:</label>
+                            <select id="loanMethod" class="w-full p-2 border rounded outline-none">
+                                <option value="বিকাশ">বিকাশ (01711-573501)</option>
+                                <option value="নগদ">নগদ (01711-573501)</option>
+                                <option value="রকেট">রকেট এজেন্ট (01613-573627)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-purple-50 p-3 rounded border border-purple-200 space-y-2">
+                            <p class="font-bold text-purple-900 text-[11px]"><i class="fa-solid fa-camera"></i> বাধ্যতামূলক ভেরিফিকেশন (ফেস ছবি ও এনআইডি):</p>
+                            
+                            <div class="space-y-1">
+                                <label class="block font-semibold text-[11px]">১. লাইভ মুখের ফেস ছবি:</label>
+                                <div class="flex items-center space-x-2">
+                                    <button type="button" onclick="openCameraModal('loan')" class="bg-purple-700 text-white px-3 py-1.5 rounded font-bold text-[11px] shadow">
+                                        <i class="fa-solid fa-camera-retro"></i> ক্যামেরা চালু করুন
+                                    </button>
+                                    <span id="faceStatusText" class="text-green-700 font-bold text-[10px]">ছবি তোলা হয়নি</span>
+                                </div>
+                                <input type="hidden" id="faceCapturedData" required>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-[11px]">২. এনআইডি (NID) স্ক্যান কপি:</label>
+                                <input type="file" id="docNid" accept="image/*" required class="w-full text-[10px] bg-white p-1 border rounded">
                             </div>
                             <div>
-                                <label class="font-semibold block mb-1">টোল খরচ</label>
-                                <input type="number" id="costToll" placeholder="0" class="w-full p-2 border rounded outline-none">
-                            </div>
-                            <div>
-                                <label class="font-semibold block mb-1">ড্রাইভার/হেলপার খোরাকি</label>
-                                <input type="number" id="costDriver" placeholder="0" class="w-full p-2 border rounded outline-none">
-                            </div>
-                            <div>
-                                <label class="font-semibold block mb-1">পুলিশ খরচ</label>
-                                <input type="number" id="costPolice" placeholder="0" class="w-full p-2 border rounded outline-none">
-                            </div>
-                            <div>
-                                <label class="font-semibold block mb-1">পৌরসভা / শ্রমিক</label>
-                                <input type="number" id="costLabor" placeholder="0" class="w-full p-2 border rounded outline-none">
+                                <label class="block font-semibold text-[11px]">৩. ড্রাইভিং লাইসেন্স স্ক্যান কপি:</label>
+                                <input type="file" id="docLicense" accept="image/*" required class="w-full text-[10px] bg-white p-1 border rounded">
                             </div>
                         </div>
 
                         <div>
-                            <label class="font-semibold block mb-1">অন্যান্য খরচ</label>
-                            <input type="number" id="costOthers" placeholder="0" class="w-full p-2 border rounded outline-none">
+                            <label class="font-semibold block mb-0.5">বর্তমান লোকেশন:</label>
+                            <input type="text" id="loanLocation" readonly placeholder="লোকেশন ট্র্যাক হচ্ছে..." class="w-full p-2 border rounded bg-gray-100 text-gray-600">
                         </div>
 
-                        <div class="flex space-x-2">
-                            <button type="submit" id="saveBtn" class="flex-1 bg-purple-700 text-white font-bold py-2.5 rounded shadow hover:bg-purple-800 transition">সেভ করুন</button>
-                            <button type="button" id="cancelEditBtn" onclick="resetForm()" class="hidden bg-gray-500 text-white font-bold px-4 py-2.5 rounded shadow">বাতিল</button>
-                        </div>
+                        <button type="submit" class="w-full bg-purple-700 text-white font-bold py-2.5 rounded shadow hover:bg-purple-800">৭ দিনের শর্তে লোন আবেদন জমা দিন</button>
                     </form>
+
+                    <!-- লোন স্ট্যাটাস ও কাউন্টডাউন -->
+                    <div class="bg-white p-3 rounded border shadow-sm space-y-2 mt-3">
+                        <h4 class="font-bold text-purple-900 border-b pb-1"><i class="fa-solid fa-clock-rotate-left"></i> আমার লোন স্ট্যাটাস ও পরিশোধের সময়:</h4>
+                        <div id="customerLoanStatusBox" class="space-y-2"></div>
+                    </div>
                 </div>
 
-                <!-- Personal Trip History List -->
-                <div class="space-y-2">
-                    <h3 class="font-bold text-sm text-gray-700">আমার আগের হিসাবসমূহ:</h3>
-                    <div id="tripList" class="space-y-2">
-                        <!-- Loaded Dynamically -->
+                <!-- Section 3: Flexiload Tab -->
+                <div id="subViewRecharge" class="space-y-3 text-xs hidden">
+                    <form id="rechargeForm" onsubmit="submitRechargeRequest(event)" class="space-y-2.5 bg-white p-3.5 rounded border shadow-sm">
+                        <h4 class="font-bold text-blue-900 border-b pb-1.5"><i class="fa-solid fa-mobile-screen-button"></i> মোবাইল ফ্লেক্সিলোড</h4>
+                        <p class="text-gray-600">ℹ️ ১০ টাকা থেকে ৩০০ টাকা পর্যন্ত ফ্লেক্সিলোড নিতে পারবেন। ১০০ টাকার নিচে ১০ টাকা এবং ১০০ থেকে ৩০০ টাকায় ১৫ টাকা সার্ভিস চার্জ।</p>
+                        
+                        <div>
+                            <label class="font-semibold block mb-0.5">অপারেটর সিলেক্ট করুন:</label>
+                            <select id="rechOperator" class="w-full p-2 border rounded outline-none">
+                                <option value="গ্রামীণফোন (GP)">গ্রামীণফোন (GP)</option>
+                                <option value="রবি (Robi)">রবি (Robi)</option>
+                                <option value="এয়ারটেল (Airtel)">এয়ারটেল (Airtel)</option>
+                                <option value="বাংলালিংক (Banglalink)">বাংলালিংক (Banglalink)</option>
+                                <option value="টেলিটক (Teletalk)">টেলিটক (Teletalk)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-semibold block mb-0.5">যে নম্বরে পাঠাতে হবে:</label>
+                            <input type="tel" id="rechPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded outline-none">
+                        </div>
+                        <div>
+                            <label class="font-semibold block mb-0.5">টাকার পরিমাণ (১০ - ৩০০ টাকা):</label>
+                            <input type="number" id="rechAmount" min="10" max="300" oninput="calculateRechargeTotal()" required placeholder="যেমন: ৫০ বা ২০০" class="w-full p-2 border rounded font-bold text-blue-700 outline-none">
+                        </div>
+                        <div id="rechargeCalculationPreview" class="bg-blue-50 p-2 rounded border border-blue-200 text-blue-900 font-bold">
+                            সার্ভিস চার্জ ও মোট খরচ: পরিমাণ লিখুন...
+                        </div>
+
+                        <div class="bg-blue-50 p-3 rounded border border-blue-200 space-y-2">
+                            <p class="font-bold text-blue-900 text-[11px]"><i class="fa-solid fa-id-card"></i> বাধ্যতামূলক ভেরিফিকেশন (মুখের ফেস ছবি ও এনআইডি):</p>
+                            
+                            <div class="space-y-1">
+                                <label class="block font-semibold text-[11px]">১. লাইভ ফেস ছবি:</label>
+                                <div class="flex items-center space-x-2">
+                                    <button type="button" onclick="openCameraModal('recharge')" class="bg-blue-700 text-white px-3 py-1.5 rounded font-bold text-[11px] shadow">
+                                        <i class="fa-solid fa-camera"></i> ক্যামেরা চালু করুন
+                                    </button>
+                                    <span id="rechFaceStatusText" class="text-green-700 font-bold text-[10px]">ছবি তোলা হয়নি</span>
+                                </div>
+                                <input type="hidden" id="rechFaceCapturedData" required>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-[11px]">২. এনআইডি (NID) স্ক্যান কপি:</label>
+                                <input type="file" id="rechDocNid" accept="image/*" required class="w-full text-[10px] bg-white p-1 border rounded">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-700 text-white font-bold py-2.5 rounded shadow hover:bg-blue-800">ফ্লেক্সিলোড রিকোয়েস্ট পাঠান (২০ মিনিট প্রসেসিং)</button>
+                    </form>
+
+                    <div class="bg-white p-3 rounded border shadow-sm space-y-2">
+                        <h4 class="font-bold text-blue-900 border-b pb-1"><i class="fa-solid fa-clock-rotate-left"></i> আমার ফ্লেক্সিলোড ও কাউন্টডাউন ট্র্যাকিং:</h4>
+                        <div id="customerRechargeHistory" class="space-y-2"></div>
                     </div>
                 </div>
             </div>
@@ -262,56 +407,49 @@
             <div id="partyView" class="hidden space-y-3 text-xs">
                 <div class="bg-amber-100 p-3 rounded font-bold text-amber-900 border border-amber-300 flex justify-between items-center">
                     <span><i class="fa-solid fa-users"></i> পার্টি ডিরেক্টরি (পার্টির নাম্বার ও ঠিকানা)</span>
-                    <button onclick="openPartyModal()" class="bg-amber-700 text-white px-2.5 py-1 rounded text-[11px] font-bold shadow">
+                    <button type="button" onclick="openPartyModal()" class="bg-amber-700 text-white px-2.5 py-1 rounded text-[11px] font-bold shadow">
                         <i class="fa-solid fa-plus"></i> নতুন পার্টি যোগ করুন
                     </button>
                 </div>
-
-                <div id="partyDirectoryList" class="space-y-2 pt-1">
-                    <!-- Party items loaded dynamically -->
-                </div>
+                <div id="partyDirectoryList" class="space-y-2 pt-1"></div>
             </div>
 
-            <!-- Contact & Helpline / Emergency Services Screen -->
+            <!-- Contact & Helpline & 64 Districts Screen -->
             <div id="contactView" class="hidden space-y-3 text-xs">
                 <div class="bg-purple-100 p-3 rounded font-bold text-purple-900 border border-purple-300">
-                    যোগাযোগ, জরুরী সেবা ও জেলার দূরত্ব
+                    জরুরী সেবা, পুলিশ, ফায়ার সার্ভিস, হাসপাতাল ও ৬৪ জেলার দূরত্ব ও লোকেশন
                 </div>
 
-                <!-- Admin & Payment Contacts -->
                 <div class="bg-white border rounded p-3 shadow-sm space-y-2">
                     <p class="font-bold text-gray-800 border-b pb-1">আমাদের সাথে যোগাযোগের মাধ্যম:</p>
                     <div class="space-y-1.5">
                         <a href="https://wa.me/8801711573501" target="_blank" class="flex items-center space-x-2 bg-green-50 text-green-800 p-2 rounded border border-green-200 font-bold">
                             <i class="fa-brands fa-whatsapp text-base text-green-600"></i>
-                            <span>WhatsApp: 01711-573501</span>
+                            <span>WhatsApp/Call: 01711-573501</span>
                         </a>
-                        <a href="tel:+8809638639227" class="flex items-center space-x-2 bg-blue-50 text-blue-800 p-2 rounded border border-blue-200 font-bold">
+                        <a href="tel:09638639227" class="flex items-center space-x-2 bg-blue-50 text-blue-800 p-2 rounded border border-blue-200 font-bold">
                             <i class="fa-solid fa-phone text-base text-blue-600"></i>
-                            <span>হেল্পলাইন: +880 9638-639227</span>
+                            <span>ব্রিলিয়ান্ট হেল্পলাইন (০৯ দিয়ে): 09638-639227</span>
                         </a>
                     </div>
                     <div class="pt-1 text-[11px] space-y-1 text-gray-700">
-                        <p><i class="fa-solid fa-mobile-screen text-purple-600"></i> রকেট এজেন্ট (মাসিক ফি ২০ টাকা): <strong>01613-573627+3</strong></p>
-                        <p><i class="fa-solid fa-wallet text-pink-600"></i> বিকাশ/নগদ পার্সোনাল: <strong>01711-573501</strong></p>
+                        <p><i class="fa-solid fa-wallet text-pink-600"></i> বিকাশ/নগদ: <strong>01711-573501</strong></p>
+                        <p><i class="fa-solid fa-wallet text-purple-600"></i> রকেট এজেন্ট: <strong>01613-573627</strong></p>
                     </div>
                 </div>
 
-                <!-- Emergency Contacts Category Buttons -->
                 <div class="flex overflow-x-auto space-x-1 py-1">
-                    <button onclick="showContactTab('dist')" class="px-2.5 py-1 bg-purple-700 text-white rounded whitespace-nowrap">৬৪ জেলার দূরত্ব</button>
-                    <button onclick="showContactTab('police')" class="px-2.5 py-1 bg-blue-700 text-white rounded whitespace-nowrap">পুলিশ (৪ জন)</button>
-                    <button onclick="showContactTab('fire')" class="px-2.5 py-1 bg-red-700 text-white rounded whitespace-nowrap">ফায়ার সার্ভিস</button>
-                    <button onclick="showContactTab('hospital')" class="px-2.5 py-1 bg-green-700 text-white rounded whitespace-nowrap">হাসপাতাল</button>
+                    <button type="button" onclick="showContactTab('dist')" class="px-2.5 py-1 bg-purple-700 text-white rounded whitespace-nowrap">৬৪ জেলার দূরত্ব ও লোকেশন</button>
+                    <button type="button" onclick="showContactTab('police')" class="px-2.5 py-1 bg-blue-700 text-white rounded whitespace-nowrap">পুলিশ</button>
+                    <button type="button" onclick="showContactTab('fire')" class="px-2.5 py-1 bg-red-700 text-white rounded whitespace-nowrap">ফায়ার সার্ভিস</button>
+                    <button type="button" onclick="showContactTab('hospital')" class="px-2.5 py-1 bg-green-700 text-white rounded whitespace-nowrap">হাসপাতাল</button>
                 </div>
 
                 <div id="districtSearchBox" class="mb-1">
-                    <input type="text" id="distSearch" oninput="filterDistricts()" placeholder="জেলার নাম দিয়ে দূরত্ব খুঁজুন..." class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-purple-600">
+                    <input type="text" id="distSearch" oninput="filterDistricts()" placeholder="জেলার নাম দিয়ে দূরত্ব ও লোকেশন খুঁজুন..." class="w-full p-2 border rounded text-xs outline-none">
                 </div>
 
-                <div id="contactTabContent" class="bg-white border p-3 rounded min-h-[200px] max-h-[300px] overflow-y-auto">
-                    <!-- Loaded dynamically -->
-                </div>
+                <div id="contactTabContent" class="bg-white border p-3 rounded min-h-[220px] max-h-[320px] overflow-y-auto"></div>
             </div>
 
             <!-- Google Maps Screen -->
@@ -322,52 +460,68 @@
                 </div>
             </div>
 
-            <!-- Admin Control Panel (Secure View for Mukul) -->
+            <!-- Admin Control Panel (Visible Only to Mukul: 01713573627) -->
             <div id="adminView" class="hidden space-y-4">
-                <div class="bg-yellow-100 border border-yellow-400 p-3 rounded text-xs text-yellow-800 font-semibold space-y-1">
+                <div class="bg-yellow-100 border border-yellow-400 p-3 rounded text-xs text-yellow-800 font-semibold space-y-2">
                     <div class="flex justify-between items-center">
-                        <span><i class="fa-solid fa-user-shield"></i> এডমিন কন্ট্রোল প্যানেল (মুকুল)</span>
-                        <button onclick="logout()" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">লগআউট</button>
+                        <span><i class="fa-solid fa-user-shield"></i> এডমিন কন্ট্রোল প্যানেল (মুকুল: 01713573627)</span>
+                        <button type="button" onclick="logout()" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">লগআউট</button>
                     </div>
                     <div class="grid grid-cols-2 gap-2 pt-1 border-t border-yellow-300 text-[11px]">
-                        <p>মোট নিবন্ধিত গাড়ি/ব্যবহারকারী: <strong id="adminTotalCarsCount" class="text-purple-900">০</strong></p>
+                        <p>মোট নিবন্ধিত গাড়ি: <strong id="adminTotalCarsCount" class="text-purple-900">০</strong></p>
                         <p>মেয়াদোত্তীর্ণ/বকেয়া: <strong id="adminUnpaidCount" class="text-red-700">০</strong></p>
+                    </div>
+                    <div>
+                        <input type="text" id="adminSearchInput" oninput="renderAdminPanel()" placeholder="নম্বর বা নাম দিয়ে কাস্টমার খুঁজুন..." class="w-full p-2 border rounded text-xs bg-white text-gray-800 outline-none">
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <h3 class="font-bold text-sm text-gray-800">সকল কাস্টমারের ডাটা ও পেমেন্ট রিকোয়েস্ট তালিকা:</h3>
-                    <div id="adminUserList" class="space-y-3">
-                        <!-- Loaded dynamically -->
-                    </div>
+                    <h3 class="font-bold text-sm text-gray-800">সকল কাস্টমার, লোন, ফ্লেক্সিলোড ও পেমেন্ট তালিকা:</h3>
+                    <div id="adminUserList" class="space-y-3"></div>
                 </div>
             </div>
         </main>
 
-        <!-- Vehicle Info Edit Popup Modal -->
+        <!-- Camera Modal -->
+        <div id="cameraModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-sm rounded-xl p-4 shadow-xl text-xs space-y-3 text-center">
+                <h3 class="font-bold text-purple-900 text-sm"><i class="fa-solid fa-camera"></i> মুখের ফেস ছবি তুলুন</h3>
+                <div class="relative w-full h-64 bg-black rounded overflow-hidden flex items-center justify-center">
+                    <video id="cameraVideo" autoplay playsinline class="w-full h-full object-cover"></video>
+                    <canvas id="cameraCanvas" class="hidden"></canvas>
+                </div>
+                <div class="flex space-x-2 pt-2">
+                    <button type="button" onclick="captureFacePhoto()" class="flex-1 bg-green-600 text-white font-bold py-2 rounded">ছবি তুলুন</button>
+                    <button type="button" onclick="closeCameraModal()" class="bg-gray-500 text-white font-bold px-4 py-2 rounded">বাতিল</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Info Edit Modal -->
         <div id="vehicleModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
             <div class="bg-white w-full max-w-sm rounded-xl p-4 shadow-xl text-xs space-y-3">
                 <div class="flex justify-between items-center border-b pb-2">
                     <h3 class="font-bold text-purple-900 text-sm"><i class="fa-solid fa-truck"></i> গাড়ি ও তথ্য আপডেট</h3>
-                    <button onclick="closeVehicleInfoModal()" class="text-gray-500 hover:text-red-600 font-bold text-base">&times;</button>
+                    <button type="button" onclick="closeVehicleInfoModal()" class="text-gray-500 hover:text-red-600 font-bold text-base">&times;</button>
                 </div>
 
                 <form onsubmit="saveVehicleInfo(event)" class="space-y-2">
                     <div>
                         <label class="font-semibold block mb-0.5 text-gray-700">গাড়ির নম্বর / ড্রাগ-আইডি</label>
-                        <input type="text" id="inputCarNo" placeholder="যেমন: ১১০৯" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                        <input type="text" id="inputCarNo" placeholder="যেমন: ১১০৯" class="w-full p-2 border rounded outline-none">
                     </div>
                     <div>
                         <label class="font-semibold block mb-0.5 text-gray-700">গাড়ির সিরিয়াল নম্বর</label>
-                        <input type="text" id="inputSerial" placeholder="যেমন: ঢাকা মেট্রো-ট ১২-XXXX" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                        <input type="text" id="inputSerial" placeholder="যেমন: ঢাকা মেট্রো-ট ১২-XXXX" class="w-full p-2 border rounded outline-none">
                     </div>
                     <div>
                         <label class="font-semibold block mb-0.5 text-gray-700">ড্রাইভারের নাম ও মোবাইল</label>
-                        <input type="text" id="inputDriver" placeholder="যেমন: নাম (017XXXXXXXX)" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                        <input type="text" id="inputDriver" placeholder="যেমন: নাম (017XXXXXXXX)" class="w-full p-2 border rounded outline-none">
                     </div>
                     <div>
                         <label class="font-semibold block mb-0.5 text-gray-700">মালিকের নাম ও মোবাইল</label>
-                        <input type="text" id="inputOwner" placeholder="যেমন: নাম (017XXXXXXXX)" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-purple-600">
+                        <input type="text" id="inputOwner" placeholder="যেমন: নাম (017XXXXXXXX)" class="w-full p-2 border rounded outline-none">
                     </div>
 
                     <div class="flex space-x-2 pt-2">
@@ -378,27 +532,27 @@
             </div>
         </div>
 
-        <!-- Party Contact Add/Edit Popup Modal -->
+        <!-- Party Contact Modal -->
         <div id="partyModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
             <div class="bg-white w-full max-w-sm rounded-xl p-4 shadow-xl text-xs space-y-3">
                 <div class="flex justify-between items-center border-b pb-2">
                     <h3 id="partyModalTitle" class="font-bold text-amber-900 text-sm"><i class="fa-solid fa-user-plus"></i> পার্টির তথ্য সেভ করুন</h3>
-                    <button onclick="closePartyModal()" class="text-gray-500 hover:text-red-600 font-bold text-base">&times;</button>
+                    <button type="button" onclick="closePartyModal()" class="text-gray-500 hover:text-red-600 font-bold text-base">&times;</button>
                 </div>
 
                 <form onsubmit="savePartyContact(event)" class="space-y-2">
                     <input type="hidden" id="editPartyId" value="">
                     <div>
                         <label class="font-semibold block mb-0.5 text-gray-700">পার্টির নাম</label>
-                        <input type="text" id="partyName" required placeholder="পার্টি / কোম্পানির নাম" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-amber-600">
+                        <input type="text" id="partyName" required placeholder="পার্টি / কোম্পানির নাম" class="w-full p-2 border rounded outline-none">
                     </div>
                     <div>
                         <label class="font-semibold block mb-0.5 text-gray-700">মোবাইল নম্বর</label>
-                        <input type="tel" id="partyPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-amber-600">
+                        <input type="tel" id="partyPhone" required placeholder="017XXXXXXXX" class="w-full p-2 border rounded outline-none">
                     </div>
                     <div>
                         <label class="font-semibold block mb-0.5 text-gray-700">ঠিকানা / রুট</label>
-                        <input type="text" id="partyAddress" placeholder="যেমন: টাঙ্গাইল" class="w-full p-2 border rounded outline-none focus:ring-1 focus:ring-amber-600">
+                        <input type="text" id="partyAddress" placeholder="যেমন: টাঙ্গাইল" class="w-full p-2 border rounded outline-none">
                     </div>
 
                     <div class="flex space-x-2 pt-2">
@@ -409,31 +563,63 @@
             </div>
         </div>
 
+        <!-- Loan Repayment Modal -->
+        <div id="repayModal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-sm rounded-xl p-4 shadow-xl text-xs space-y-3">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <h3 class="font-bold text-purple-900 text-sm"><i class="fa-solid fa-money-bill-wave"></i> লোন পরিশোধ ফরম</h3>
+                    <button type="button" onclick="closeRepayModal()" class="text-gray-500 hover:text-red-600 font-bold text-base">&times;</button>
+                </div>
+
+                <form onsubmit="submitLoanRepayment(event)" class="space-y-2">
+                    <input type="hidden" id="repayLoanId" value="">
+                    <div class="bg-amber-50 p-2 rounded text-[11px] font-bold text-amber-900">
+                        বিকাশ/নগদ: <strong>01711-573501</strong> | রকেট: <strong>01613-573627</strong> | ব্রিলিয়ান্ট: <strong>09638-639227</strong>
+                    </div>
+                    <div>
+                        <label class="font-semibold block mb-0.5">টাকা কোন মাধ্যমে পাঠিয়েছেন:</label>
+                        <select id="repayMethod" class="w-full p-2 border rounded outline-none">
+                            <option value="বিকাশ">বিকাশ (01711-573501)</option>
+                            <option value="নগদ">নগদ (01711-573501)</option>
+                            <option value="রকেট">রকেট এজেন্ট (01613-573627)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="font-semibold block mb-0.5">ট্রানজেকশন আইডি (TrxID):</label>
+                        <input type="text" id="repayTrxId" required placeholder="যেমন: 8N76T..." class="w-full p-2 border rounded outline-none">
+                    </div>
+                    <div class="flex space-x-2 pt-2">
+                        <button type="submit" class="flex-1 bg-green-600 text-white font-bold py-2 rounded">পরিশোধ জমা দিন</button>
+                        <button type="button" onclick="closeRepayModal()" class="bg-gray-400 text-white font-bold px-3 py-2 rounded">বাতিল</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Bottom Navigation Bar -->
         <nav id="bottomNav" class="bottom-nav bg-purple-900 text-white border-t border-purple-800 max-w-[480px] mx-auto hidden">
             <div class="flex justify-around items-center py-2 text-center text-[10px]">
-                <button onclick="navSwitch('dashboard')" class="flex-1 hover:text-yellow-400">
-                    <i class="fa-solid fa-calculator text-lg block mb-0.5"></i> হিসাব
+                <button type="button" onclick="navSwitch('dashboard')" class="flex-1 hover:text-yellow-400">
+                    <i class="fa-solid fa-calculator text-lg block mb-0.5"></i> হিসাব ও লোন
                 </button>
-                <button onclick="navSwitch('party')" class="flex-1 hover:text-yellow-400">
+                <button type="button" onclick="navSwitch('party')" class="flex-1 hover:text-yellow-400">
                     <i class="fa-solid fa-users text-lg block mb-0.5"></i> পার্টির নাম্বার
                 </button>
-                <button onclick="navSwitch('contact')" class="flex-1 hover:text-yellow-400">
-                    <i class="fa-solid fa-headset text-lg block mb-0.5"></i> যোগাযোগ
+                <button type="button" onclick="navSwitch('contact')" class="flex-1 hover:text-yellow-400">
+                    <i class="fa-solid fa-headset text-lg block mb-0.5"></i> জরুরী ও জেলা
                 </button>
-                <button id="adminNavBtn" onclick="navSwitch('admin')" class="flex-1 hover:text-yellow-400 hidden">
-                    <i class="fa-solid fa-user-shield text-lg block mb-0.5"></i> এডমিন
+                <button type="button" id="adminNavBtn" onclick="navSwitch('admin')" class="flex-1 hover:text-yellow-400 hidden">
+                    <i class="fa-solid fa-user-shield text-lg block mb-0.5 text-yellow-400"></i> <strong class="text-yellow-300">এডমিন প্যানেল</strong>
                 </button>
-                <button onclick="navSwitch('map')" class="flex-1 hover:text-yellow-400">
+                <button type="button" onclick="navSwitch('map')" class="flex-1 hover:text-yellow-400">
                     <i class="fa-solid fa-map-location-dot text-lg block mb-0.5"></i> ম্যাপস
                 </button>
             </div>
         </nav>
     </div>
 
-    <!-- Application Script Logic with Firebase Integration -->
+    <!-- Application Script Logic -->
     <script>
-        // Firebase Configuration for Trip Hisab Mukul
         const firebaseConfig = {
             databaseURL: "https://trip-hisab-mukul-default-rtdb.firebaseio.com/"
         };
@@ -445,39 +631,94 @@
 
         const ADMIN_PHONE = "01713573627";
         const ADMIN_PASS = "1320";
+        const BKASH_NAGAD_LINE = "01711-573501";
+        const ROCKET_LINE = "01613-573627";
+        const BRILLIANT_LINE = "09638-639227";
+
+        const POLICE_DATA = [
+            { name: "জাতীয় জরুরী সেবা", phone: "999" },
+            { name: "ডিআইজি হাইওয়ে পুলিশ কন্ট্রোল", phone: "01320-000001" },
+            { name: "এসপি হাইওয়ে (পূর্বঞ্চল, ঢাকা)", phone: "01713-333444" },
+            { name: "ঢাকা মেট্রোপলিটন পুলিশ কন্ট্রোল", phone: "02-223388111" },
+            { name: "টাঙ্গাইল জেলা পুলিশ কন্ট্রোল রুম", phone: "01712-555666" }
+        ];
+
+        const FIRE_DATA = [
+            { name: "ফায়ার সার্ভিস হেডকোয়ার্টার কন্ট্রোল", phone: "02-223355555" },
+            { name: "জরুরী রেসকিউ হটলাইন", phone: "999" },
+            { name: "টাঙ্গাইল ফায়ার স্টেশন", phone: "01711-223344" },
+            { name: "ঢাকা সদরঘাট ফায়ার স্টেশন", phone: "02-9555555" }
+        ];
+
+        const HOSPITAL_DATA = [
+            { name: "ঢাকা মেডিকেল কলেজ হাসপাতাল", phone: "02-55165088" },
+            { name: "টাঙ্গাইল জেনারেল হাসপাতাল", phone: "01700-000000" },
+            { name: "জাতীয় অর্থোপেডিক (পঙ্গু) হাসপাতাল", phone: "02-9112555" }
+        ];
 
         const DISTRICTS_DATA = [
-            { name: "টাঙ্গাইল", dist: "৯৮ কি.মি." }, { name: "গাজীপুর", dist: "৩৭ কি.মি." },
-            { name: "নারায়ণগঞ্জ", dist: "১৭ কি.মি." }, { name: "মুন্সীগঞ্জ", dist: "২৭ কি.মি." },
-            { name: "মানিকগঞ্জ", dist: "৬৩ কি.মি." }, { name: "নরসিংদী", dist: "৫০ কি.মি." },
-            { name: "ফরিদপুর", dist: "১৪৫ কি.মি." }, { name: "মাদারীপুর", dist: "১৩২ কি.মি." },
-            { name: "গোপালগঞ্জ", dist: "১৬০ কি.মি." }, { name: "রাজবাড়ী", dist: "১২৫ কি.মি." },
-            { name: "শরীয়তপুর", dist: "১০৫ কি.মি." }, { name: "চট্টগ্রাম", dist: "২৪২ কি.মি." },
-            { name: "কক্সবাজার", dist: "৩৯১ কি.মি." }, { name: "কুমিল্লা", dist: "৯৭ কি.মি." },
-            { name: "ফেণী", dist: "১৫১ কি.মি." }, { name: "নোয়াখালী", dist: "১৬৭ কি.মি." },
-            { name: "লক্ষ্মীপুর", dist: "১৩৭ কি.মি." }, { name: "চাঁদপুর", dist: "১১৫ কি.মি." },
-            { name: "ব্রাহ্মণবাড়িয়া", dist: "১০৯ কি.মি." }, { name: "রাঙ্গামাটি", dist: "৩০৮ কি.মি." },
-            { name: "বান্দরবান", dist: "৩২৫ কি.মি." }, { name: "খাগড়াছড়ি", dist: "২৫৯ কি.মি." },
-            { name: "সিলেট", dist: "২৩৬ কি.মি." }, { name: "মৌলভীবাজার", dist: "২০৩ কি.মি." },
-            { name: "হবিগঞ্জ", dist: "১৩১ কি.মি." }, { name: "সুনামগঞ্জ", dist: "২৯৬ কি.মি." },
-            { name: "রাজশাহী", dist: "২৪৪ কি.মি." }, { name: "বগুড়া", dist: "১৯৭ কি.মি." },
-            { name: "পাবনা", dist: "২১৫ কি.মি." }, { name: "সিরাজগঞ্জ", dist: "১৩০ কি.মি." },
-            { name: "নাটোর", dist: "২২০ কি.মি." }, { name: "নওগাঁ", dist: "২৭২ কি.মি." },
-            { name: "চাঁপাইনবাবগঞ্জ", dist: "৩০২ কি.মি." }, { name: "জয়পুরহাট", dist: "২৪৯ কি.মি." },
-            { name: "রংপুর", dist: "৩০৪ কি.মি." }, { name: "দিনাজপুর", dist: "৩৩৮ কি.মি." },
-            { name: "গাইবান্ধা", dist: "২৬৮ কি.মি." }, { name: "কুড়িগ্রাম", dist: "৩৪২ কি.মি." },
-            { name: "নীলফামারী", dist: "৩৫৭ কি.মি." }, { name: "লালমনিরহাট", dist: "৩৪৭ কি.মি." },
-            { name: "ঠাকুরগাঁও", dist: "৪১০ কি.মি." }, { name: "পঞ্চগড়", dist: "৪৪০ কি.মি." },
-            { name: "খুলনা", dist: "২১৭ কি.মি." }, { name: "যশোর", dist: "২৪৯ কি.মি." },
-            { name: "সাতক্ষীরা", dist: "২৩৮ কি.মি." }, { name: "বাগেরহাট", dist: "১৭৮ কি.মি." },
-            { name: "ঝিনাইদহ", dist: "২০৬ কি.মি." }, { name: "কুষ্টিয়া", dist: "২৪০ কি.মি." },
-            { name: "মাগুরা", dist: "১৭৬ কি.মি." }, { name: "মেহেরপুর", dist: "২৩৬ কি.মি." },
-            { name: "চুয়াডাঙ্গা", dist: "২১১ কি.মি." }, { name: "নড়াইল", dist: "১৩২ কি.মি." },
-            { name: "বরিশাল", dist: "১৮৩ কি.মি." }, { name: "পটুয়াখালী", dist: "২৪০ কি.মি." },
-            { name: "ভোলা", dist: "২৫০ কি.মি." }, { name: "পিরোজপুর", dist: "২০০ কি.মি." },
-            { name: "বরগুনা", dist: "২৭৫ কি.মি." }, { name: "ঝালকাঠি", dist: "১৯৫ কি.মি." },
-            { name: "ময়মনসিংহ", dist: "১২০ কি.মি." }, { name: "জামালপুর", dist: "১৪০ কি.মি." },
-            { name: "শেরপুর", dist: "১৯৮ কি.মি." }, { name: "নেত্রকোণা", dist: "১৬০ কি.মি." }
+            { name: "টাঙ্গাইল", dist: "৯৮ কি.মি.", loc: "ঢাকা থেকে উত্তর দিকে ৯৮ কি.মি. দূরে অবস্থিত।" },
+            { name: "গাজীপুর", dist: "৩৭ কি.মি.", loc: "ঢাকা সংলগ্ন উত্তর দিকে ৩৭ কি.মি." },
+            { name: "নারায়ণগঞ্জ", dist: "১৭ কি.মি.", loc: "ঢাকার দক্ষিণ-পূর্বে ১৭ কি.মি." },
+            { name: "মুন্সীগঞ্জ", dist: "২৭ কি.মি.", loc: "ঢাকার দক্ষিণ দিকে ২৭ কি.মি." },
+            { name: "মানিকগঞ্জ", dist: "৬৩ কি.মি.", loc: "ঢাকার পশ্চিমে ৬৩ কি.মি." },
+            { name: "নরসিংদী", dist: "৫০ কি.মি.", loc: "ঢাকার উত্তর-পূর্বে ৫০ কি.মি." },
+            { name: "ফরিদপুর", dist: "১৪৫ কি.মি.", loc: "পদ্মা নদীর দক্ষিণ পাড়ে ১৪৫ কি.মি." },
+            { name: "মাদারীপুর", dist: "১৩২ কি.মি.", loc: "দক্ষিণ অঞ্চলে ১৩২ কি.মি." },
+            { name: "শরীয়তপুর", dist: "১২০ কি.মি.", loc: "পদ্মা সেতুর দক্ষিণ পাড়ে ১২০ কি.মি." },
+            { name: "রাজবাড়ী", dist: "১৩৫ কি.মি.", loc: "পদ্মা তীরের পশ্চিম অঞ্চলে ১৩৫ কি.মি." },
+            { name: "গোপালগঞ্জ", dist: "১৬০ কি.মি.", loc: "দক্ষিণ-পশ্চিমাঞ্চলে ১৬০ কি.মি." },
+            { name: "কিশোরগঞ্জ", dist: "১১৪ কি.মি.", loc: "উত্তর-পূর্বাঞ্চলে ১১৪ কি.মি." },
+            { name: "ময়মনসিংহ", dist: "১২০ কি.মি.", loc: "ব্রহ্মপুত্র নদের তীরে ১২০ কি.মি." },
+            { name: "নেত্রকোণা", dist: "১৬০ কি.মি.", loc: "উত্তরাঞ্চলে ১৬০ কি.মি." },
+            { name: "শেরপুর", dist: "১৮০ কি.মি.", loc: "সীমান্তবর্তী পাহাড়ি এলাকায় ১৮০ কি.মি." },
+            { name: "জামালপুর", dist: "১৪০ কি.মি.", loc: "যমুনা নদীর পূর্ব তীরে ১৪০ কি.মি." },
+            { name: "চট্টগ্রাম", dist: "২৪২ কি.মি.", loc: "দক্ষিণ-পূর্ব উপকূলীয় বন্দরনগরী ২৪২ কি.মি." },
+            { name: "কক্সবাজার", dist: "৩৯৫ কি.মি.", loc: "দক্ষিণ প্রান্তে সমুদ্র সৈকত সংলগ্ন ৩৯৫ কি.মি." },
+            { name: "রাঙ্গামাটি", dist: "৩১৬ কি.মি.", loc: "পার্বত্য অঞ্চলে ৩১৬ কি.মি." },
+            { name: "বান্দরবান", dist: "৩২২ কি.মি.", loc: "পাহাড়ি পাহাড়ি জনপদ ৩২২ কি.মি." },
+            { name: "খাগড়াছড়ি", dist: "২৭১ কি.মি.", loc: "পার্বত্য জেলা ২৭১ কি.মি." },
+            { name: "নোয়াখালী", dist: "১৭৫ কি.মি.", loc: "দক্ষিণ-পূর্ব অঞ্চলে ১৭৫ কি.মি." },
+            { name: "লক্ষ্মীপুর", dist: "১৬০ কি.মি.", loc: "মেঘনা নদীর তীরে ১৬০ কি.মি." },
+            { name: "ফেনী", dist: "১৫৫ কি.মি.", loc: "ঢাকা-চট্টগ্রাম মহাসড়কের পাশে ১৫৫ কি.মি." },
+            { name: "কুমিল্লা", dist: "১০০ কি.মি.", loc: "পূর্বাঞ্চলীয় বানিজ্যিক কেন্দ্র ১০০ কি.মি." },
+            { name: "ব্রাহ্মণবাড়িয়া", dist: "১১০ কি.মি.", loc: "সীমান্তবর্তী জনপদ ১১০ কি.মি." },
+            { name: "চাঁদপুর", dist: "১১০ কি.মি.", loc: "পদ্মা-মেঘনা মোহনায় ১১০ কি.মি." },
+            { name: "সিলেট", dist: "২৩৬ কি.মি.", loc: "উত্তর-পূর্বাঞ্চলীয় পাহাড়ি ও চা বাগান অঞ্চল ২৩৬ কি.মি." },
+            { name: "মৌলভীবাজার", dist: "২০৬ কি.মি.", loc: "চা পাতার জেলা ২০৬ কি.মি." },
+            { name: "হবিগঞ্জ", dist: "১৬৭ কি.মি.", loc: "উত্তরাঞ্চলীয় সংযোগস্থল ১৬৭ কি.মি." },
+            { name: "সুনামগঞ্জ", dist: "২৯০ কি.মি.", loc: "হাওড় অঞ্চল ২৯০ কি.মি." },
+            { name: "রাজশাহী", dist: "২৪৪ কি.মি.", loc: "উত্তর-পশ্চিমাঞ্চলীয় পদ্মা তীরের জেলা ২৪৪ কি.মি." },
+            { name: "বগুড়া", dist: "১৯৭ কি.মি.", loc: "উত্তরাঞ্চলের প্রবেশদ্বার ১৯৭ কি.মি." },
+            { name: "পাবনা", dist: "১৬০ কি.মি.", loc: "পাকশী ও হার্ডিঞ্জ ব্রিজ সংলগ্ন ১৬০ কি.মি." },
+            { name: "সিরাজগঞ্জ", dist: "১২৮ কি.মি.", loc: "যমুনা সেতুর পশ্চিম প্রান্তে ১২৮ কি.মি." },
+            { name: "নাটোর", dist: "২২০ কি.মি.", loc: "উত্তরাঞ্চলের ঐতিহাসিক জেলা ২২০ কি.মি." },
+            { name: "নওগাঁ", dist: "২৫০ কি.মি.", loc: "পাহাড়পুর সংলগ্ন ২৫০ কি.মি." },
+            { name: "চাঁপাইনবাবগঞ্জ", dist: "২৯৮ কি.মি.", loc: "সর্বপশ্চিম সীমানায় ২৯৮ কি.মি." },
+            { name: "জয়পুরহাট", dist: "২৭০ কি.মি.", loc: "উত্তরাঞ্চলে ২৭০ কি.মি." },
+            { name: "খুলনা", dist: "২১৭ কি.মি.", loc: "দক্ষিণ-পশ্চিমাঞ্চলীয় বিভাগীয় শহর ২১৭ কি.মি." },
+            { name: "যশোর", dist: "১৬৫ কি.মি.", loc: "বেনাপোল সীমান্ত সংলগ্ন ১৬৫ কি.মি." },
+            { name: "সাতক্ষীরা", dist: "২৫০ কি.মি.", loc: "সুন্দরবন সংলগ্ন ২৫০ কি.মি." },
+            { name: "বাগেরহাট", dist: "২২০ কি.মি.", loc: "ষাট গম্বুজ মসজিদ সংলগ্ন ২২০ কি.মি." },
+            { name: "চুয়াডাঙ্গা", dist: "২২৫ কি.মি.", loc: "পশ্চিম সীমান্ত জেলা ২২৫ কি.মি." },
+            { name: "মেহেরপুর", dist: "২৬০ কি.মি.", loc: "মুজিবনগর সংলগ্ন ২৬০ কি.মি." },
+            { name: "নড়াইল", dist: "১৮৫ কি.মি.", loc: "চিত্রা নদীর তীরে ১৮৫ কি.মি." },
+            { name: "মাগুরা", dist: "১৭০ কি.মি.", loc: "দক্ষিণ-পশ্চিমাঞ্চলে ১৭০ কি.মি." },
+            { name: "ঝিনাইদহ", dist: "১৮০ কি.মি.", loc: "পশ্চিমাঞ্চলে ১৮০ কি.মি." },
+            { name: "বরিশাল", dist: "২৫৫ কি.মি.", loc: "ধান-নদী-খালের শস্যক্ষেত্র ২৫৫ কি.মি." },
+            { name: "পটুয়াখালী", dist: "২৯০ কি.মি.", loc: "সাগরকন্যা কুয়াকাটা সংলগ্ন ২৯০ কি.মি." },
+            { name: "ভোলা", dist: "৩০০ কি.মি.", loc: "সবচেয়ে বড় দ্বীপ জেলা ৩০০ কি.মি." },
+            { name: "পিরোজপুর", dist: "২৩০ কি.মি.", loc: "দক্ষিণাঞ্চলে ২৩০ কি.মি." },
+            { name: "বরগুনা", dist: "৩১০ কি.মি.", loc: "দক্ষিণ উপকূলে ৩১০ কি.মি." },
+            { name: "ঝালকাঠি", dist: "২৪০ কি.মি.", loc: "সুগন্ধা নদীর তীরে ২৪০ কি.মি." },
+            { name: "রংপুর", dist: "৩০০ কি.মি.", loc: "উত্তরাঞ্চলীয় বিভাগীয় শহর ৩০০ কি.মি." },
+            { name: "দিনাজপুর", dist: "৩৫০ কি.মি.", loc: "কান্তজী মন্দির সংলগ্ন ৩৫০ কি.মি." },
+            { name: "গাইবান্ধা", dist: "২৭০ কি.মি.", loc: "তিস্তা নদী সংলগ্ন ২৭০ কি.মি." },
+            { name: "কুড়িগ্রাম", dist: "৩৪০ কি.মি.", loc: "উত্তর সীমান্ত জেলা ৩৪০ কি.মি." },
+            { name: "লালমনিরহাট", dist: "৩৩০ কি.মি.", loc: "তীনবিঘা করিডোর সংলগ্ন ৩৩০ কি.মি." },
+            { name: "নীলফামারী", dist: "৩৪০ কি.মি.", loc: "তিস্তা ব্যারাজ সংলগ্ন ৩৪০ কি.মি." },
+            { name: "পঞ্চগড়", dist: "৩৮০ কি.মি.", loc: "তেঁতুলিয়া ও কাঞ্চনজঙ্ঘা দৃশ্যমান এলাকা ৩৮০ কি.মি." },
+            { name: "ঠাকুরগাঁও", dist: "৩৬৫ কি.মি.", loc: "উত্তর-পশ্চিম সীমান্তে ৩৬৫ কি.মি." }
         ];
 
         let currentUser = JSON.parse(localStorage.getItem('trip_current_user')) || null;
@@ -485,15 +726,30 @@
         let tripsDB = [];
         let partyDB = [];
         let paymentsDB = [];
-        let failedAttempts = JSON.parse(localStorage.getItem('trip_failed_attempts')) || {};
+        let loansDB = [];
+        let rechargesDB = [];
+        let mediaStream = null;
+        let activeCameraTarget = 'loan';
 
         window.onload = function() {
             const tripDateInput = document.getElementById('tripDate');
-            if (tripDateInput) {
-                tripDateInput.valueAsDate = new Date();
+            if (tripDateInput) tripDateInput.valueAsDate = new Date();
+
+            const savedPhone = localStorage.getItem('trip_saved_phone');
+            if (savedPhone) {
+                const phoneInput = document.getElementById('loginPhone');
+                if (phoneInput) phoneInput.value = savedPhone;
+                const remCheck = document.getElementById('rememberMeCheck');
+                if (remCheck) remCheck.checked = true;
             }
 
-            // Sync with Firebase Realtime Database
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const locField = document.getElementById('loanLocation');
+                    if(locField) locField.value = `Lat: ${position.coords.latitude.toFixed(4)}, Lon: ${position.coords.longitude.toFixed(4)}`;
+                });
+            }
+
             fetchAllFirebaseData(() => {
                 if (currentUser) {
                     checkSubscriptionAndRender();
@@ -508,24 +764,30 @@
                 const data = snapshot.val() || {};
                 
                 usersDB = [];
-                if (data.users) {
-                    Object.keys(data.users).forEach(key => usersDB.push(data.users[key]));
-                }
+                if (data.users) Object.keys(data.users).forEach(k => usersDB.push(data.users[k]));
 
                 tripsDB = [];
                 if (data.trips) {
-                    Object.keys(data.trips).forEach(key => tripsDB.push(data.trips[key]));
+                    Object.keys(data.trips).forEach(k => tripsDB.push(data.trips[k]));
                     tripsDB.sort((a, b) => b.id - a.id);
                 }
 
                 partyDB = [];
-                if (data.parties) {
-                    Object.keys(data.parties).forEach(key => partyDB.push(data.parties[key]));
-                }
+                if (data.parties) Object.keys(data.parties).forEach(k => partyDB.push(data.parties[k]));
 
                 paymentsDB = [];
-                if (data.payments) {
-                    Object.keys(data.payments).forEach(key => paymentsDB.push(data.payments[key]));
+                if (data.payments) Object.keys(data.payments).forEach(k => paymentsDB.push(data.payments[k]));
+
+                loansDB = [];
+                if (data.loans) {
+                    Object.keys(data.loans).forEach(k => loansDB.push(data.loans[k]));
+                    loansDB.sort((a, b) => b.id - a.id);
+                }
+
+                rechargesDB = [];
+                if (data.recharges) {
+                    Object.keys(data.recharges).forEach(k => rechargesDB.push(data.recharges[k]));
+                    rechargesDB.sort((a, b) => b.id - a.id);
                 }
 
                 if (callback) callback();
@@ -555,20 +817,21 @@
             } else if (viewName === 'lockout') {
                 document.getElementById('lockoutView').classList.remove('hidden');
             } else {
-                if (currentUser && currentUser.phone !== ADMIN_PHONE) {
+                if (currentUser) {
                     document.getElementById('mainHeader').classList.remove('hidden');
                     document.getElementById('bottomNav').classList.remove('hidden');
                     loadVehicleInfo();
-                }
 
-                if(currentUser && currentUser.phone === ADMIN_PHONE) {
-                    document.getElementById('adminNavBtn').classList.remove('hidden');
-                    document.getElementById('bottomNav').classList.remove('hidden');
+                    if (currentUser.phone === ADMIN_PHONE) {
+                        document.getElementById('adminNavBtn').classList.remove('hidden');
+                    }
                 }
 
                 if (viewName === 'dashboard') {
                     document.getElementById('dashboardView').classList.remove('hidden');
                     renderTrips();
+                    renderCustomerRecharges();
+                    renderCustomerLoanStatus();
                 } else if (viewName === 'admin' && currentUser && currentUser.phone === ADMIN_PHONE) {
                     document.getElementById('adminView').classList.remove('hidden');
                     renderAdminPanel();
@@ -588,9 +851,7 @@
         }
 
         function navSwitch(target) {
-            fetchAllFirebaseData(() => {
-                showView(target);
-            });
+            fetchAllFirebaseData(() => showView(target));
         }
 
         function switchAuthTab(tab) {
@@ -607,27 +868,113 @@
             }
         }
 
+        function switchMainTab(type) {
+            document.getElementById('subViewTrip').classList.add('hidden');
+            document.getElementById('subViewLoan').classList.add('hidden');
+            document.getElementById('subViewRecharge').classList.add('hidden');
+            document.getElementById('mainTabTrip').className = "w-1/3 py-2.5 font-bold text-gray-500";
+            document.getElementById('mainTabLoan').className = "w-1/3 py-2.5 font-bold text-gray-500";
+            document.getElementById('mainTabRecharge').className = "w-1/3 py-2.5 font-bold text-gray-500";
+
+            if(type === 'trip') {
+                document.getElementById('subViewTrip').classList.remove('hidden');
+                document.getElementById('mainTabTrip').className = "w-1/3 py-2.5 font-bold text-purple-900 border-b-2 border-purple-900";
+                renderTrips();
+            } else if(type === 'loan') {
+                document.getElementById('subViewLoan').classList.remove('hidden');
+                document.getElementById('mainTabLoan').className = "w-1/3 py-2.5 font-bold text-purple-900 border-b-2 border-purple-900";
+                renderCustomerLoanStatus();
+            } else if(type === 'recharge') {
+                document.getElementById('subViewRecharge').classList.remove('hidden');
+                document.getElementById('mainTabRecharge').className = "w-1/3 py-2.5 font-bold text-blue-900 border-b-2 border-blue-900";
+                renderCustomerRecharges();
+            }
+        }
+
+        function loginWithBiometric() {
+            const savedPhone = localStorage.getItem('trip_saved_phone');
+            if (!savedPhone) {
+                alert('আগে একবার নম্বর ও পাসওয়ার্ড দিয়ে লগইন করে "নম্বর ও পাসওয়ার্ড সেভ রাখুন" বক্সে টিক দিন!');
+                return;
+            }
+            db.ref('users/' + savedPhone).once('value').then(snapshot => {
+                const user = snapshot.val();
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem('trip_current_user', JSON.stringify(currentUser));
+                    alert('✓ ফিঙ্গারপ্রিন্ট যাচাই সফল!');
+                    checkSubscriptionAndRender();
+                } else {
+                    alert('সেভ করা অ্যাকাউন্টটি পাওয়া যায়নি।');
+                }
+            });
+        }
+
+        function openCameraModal(target = 'loan') {
+            activeCameraTarget = target;
+            document.getElementById('cameraModal').classList.remove('hidden');
+            const video = document.getElementById('cameraVideo');
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }).then(stream => {
+                mediaStream = stream;
+                video.srcObject = stream;
+            }).catch(err => {
+                alert('ক্যামেরা চালু করা সম্ভব হয়নি: ' + err.message);
+                closeCameraModal();
+            });
+        }
+
+        function closeCameraModal() {
+            document.getElementById('cameraModal').classList.add('hidden');
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+        }
+
+        function captureFacePhoto() {
+            const video = document.getElementById('cameraVideo');
+            const canvas = document.getElementById('cameraCanvas');
+            canvas.width = video.videoWidth || 320;
+            canvas.height = video.videoHeight || 240;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataURL = canvas.toDataURL('image/jpeg');
+
+            if (activeCameraTarget === 'recharge') {
+                document.getElementById('rechFaceCapturedData').value = dataURL;
+                document.getElementById('rechFaceStatusText').innerText = "✓ ফেস ছবি সংগৃহীত!";
+            } else {
+                document.getElementById('faceCapturedData').value = dataURL;
+                document.getElementById('faceStatusText').innerText = "✓ ফেস ছবি সংগৃহীত!";
+            }
+            closeCameraModal();
+        }
+
         function handleRegister(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
             const phone = document.getElementById('regPhone').value.trim();
             const pass = document.getElementById('regPass').value.trim();
 
-            if (usersDB.find(u => u.phone === phone)) {
-                alert('এই ফোন নম্বর দিয়ে ইতিপূর্বে রেজিস্ট্রেশন করা হয়েছে!');
+            if (phone === ADMIN_PHONE) {
+                alert('এই নম্বরটি এডমিনের জন্য সংরক্ষিত!');
                 return;
             }
 
-            const newUser = { name: name, phone: phone, pass: pass, regDate: new Date().getTime(), paidCycleStart: new Date().getTime() };
+            if (usersDB.find(u => u.phone === phone)) {
+                alert('এই ফোন নম্বর দিয়ে ইতিপূর্বে রেজিস্ট্রেশন করা হয়েছে! দয়া করে লগইন ট্যাবে গিয়ে লগইন করুন।');
+                switchAuthTab('login');
+                return;
+            }
+
+            const newUser = { name, phone, pass, failedAttempts: 0, regDate: new Date().getTime(), paidCycleStart: new Date().getTime(), manualActive: false };
             
             db.ref('users/' + phone).set(newUser).then(() => {
                 usersDB.push(newUser);
                 currentUser = newUser;
                 localStorage.setItem('trip_current_user', JSON.stringify(currentUser));
-                alert('রেজিস্ট্রেশন সফল হয়েছে! ৫ দিন ফ্রি ট্রায়াল চালু হলো।');
+                alert('রেজিস্ট্রেশন সফল! ৫ দিন ফ্রি ট্রায়াল চালু হলো।');
                 checkSubscriptionAndRender();
-            }).catch(err => {
-                alert('রেজিস্ট্রেশন ব্যর্থ: ' + err.message);
             });
         }
 
@@ -635,6 +982,10 @@
             e.preventDefault();
             const phone = document.getElementById('loginPhone').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
+            const rememberMe = document.getElementById('rememberMeCheck').checked;
+
+            if (rememberMe) localStorage.setItem('trip_saved_phone', phone);
+            else localStorage.removeItem('trip_saved_phone');
 
             if (phone === ADMIN_PHONE && pass === ADMIN_PASS) {
                 currentUser = { name: "এডমিন (মুকুল)", phone: ADMIN_PHONE, regDate: new Date().getTime() };
@@ -643,33 +994,35 @@
                 return;
             }
 
-            fetchAllFirebaseData(() => {
-                const user = usersDB.find(u => u.phone === phone);
+            db.ref('users/' + phone).once('value').then(snapshot => {
+                let user = snapshot.val();
+                
                 if (!user) {
-                    alert('এই নম্বর দিয়ে কোনো অ্যাকাউন্ট খোলা হয়নি!');
+                    alert('এই নম্বর দিয়ে কোনো রেজিস্ট্রেশন করা হয়নি! প্রথমে রেজিস্ট্রেশন করুন।');
+                    switchAuthTab('register');
                     return;
                 }
 
-                if (failedAttempts[phone] && failedAttempts[phone] >= 5) {
+                const currentFailed = Number(user.failedAttempts) || 0;
+                if (currentFailed >= 5) {
                     showView('lockout');
                     return;
                 }
 
                 if (user.pass === pass) {
-                    failedAttempts[phone] = 0;
-                    localStorage.setItem('trip_failed_attempts', JSON.stringify(failedAttempts));
-                    currentUser = user;
-                    localStorage.setItem('trip_current_user', JSON.stringify(currentUser));
-                    checkSubscriptionAndRender();
+                    db.ref('users/' + phone).update({ failedAttempts: 0 }).then(() => {
+                        currentUser = user;
+                        currentUser.failedAttempts = 0;
+                        localStorage.setItem('trip_current_user', JSON.stringify(currentUser));
+                        checkSubscriptionAndRender();
+                    });
                 } else {
-                    failedAttempts[phone] = (failedAttempts[phone] || 0) + 1;
-                    localStorage.setItem('trip_failed_attempts', JSON.stringify(failedAttempts));
-                    const remaining = 5 - failedAttempts[phone];
-                    if (remaining <= 0) {
-                        showView('lockout');
-                    } else {
-                        alert(`ভুল পাসওয়ার্ড! আর ${remaining} বার ভুল করলে অ্যাকাউন্ট লক হয়ে যাবে।`);
-                    }
+                    const newFailed = currentFailed + 1;
+                    db.ref('users/' + phone).update({ failedAttempts: newFailed }).then(() => {
+                        const remaining = 5 - newFailed;
+                        if (remaining <= 0) showView('lockout');
+                        else alert(`ভুল পাসওয়ার্ড! আর ${remaining} বার ভুল করলে অ্যাকাউন্ট লক হয়ে যাবে।`);
+                    });
                 }
             });
         }
@@ -680,30 +1033,27 @@
                 return;
             }
 
+            if (currentUser.manualActive) {
+                showView('dashboard');
+                return;
+            }
+
             const now = new Date().getTime();
             const regTime = currentUser.regDate || now;
             const daysPassed = (now - regTime) / (1000 * 60 * 60 * 24);
-
             const userPayment = paymentsDB.find(p => p.phone === currentUser.phone && p.status === 'approved');
 
             let isLocked = false;
             if (daysPassed > 5) {
-                if (!userPayment) {
-                    isLocked = true;
-                } else {
+                if (!userPayment) isLocked = true;
+                else {
                     const lastPayTime = userPayment.approvalTime || currentUser.paidCycleStart || regTime;
-                    const daysSincePayment = (now - lastPayTime) / (1000 * 60 * 60 * 24);
-                    if (daysSincePayment > 30) {
-                        isLocked = true;
-                    }
+                    if ((now - lastPayTime) / (1000 * 60 * 60 * 24) > 30) isLocked = true;
                 }
             }
 
-            if (isLocked) {
-                showView('locked');
-            } else {
-                showView('dashboard');
-            }
+            if (isLocked) showView('locked');
+            else showView('dashboard');
         }
 
         function submitPaymentVerification(e) {
@@ -713,64 +1063,15 @@
             const paymentId = Date.now();
 
             const newPayment = {
-                id: paymentId,
-                phone: currentUser.phone,
-                name: currentUser.name,
-                senderNo: senderNo,
-                trxId: trxId,
-                status: 'pending',
-                time: new Date().toLocaleString()
+                id: paymentId, phone: currentUser.phone, name: currentUser.name,
+                senderNo, trxId, status: 'pending', time: new Date().toLocaleString()
             };
 
             db.ref('payments/' + paymentId).set(newPayment).then(() => {
-                paymentsDB.push(newPayment);
-                alert('আপনার পেমেন্ট তথ্য সফলভাবে জমা দেওয়া হয়েছে! ভেরিফাই হতে প্রায় ২০ মিনিট সময় লাগবে।');
+                alert('২০ টাকা পেমেন্ট সাবমিট হয়েছে! এডমিন ভেরিফাই করে অ্যাকাউন্ট অন করে দেবেন। বিকাশ/নগদ: ' + BKASH_NAGAD_LINE + ' | রকেট: ' + ROCKET_LINE);
                 document.getElementById('paySenderNo').value = '';
                 document.getElementById('payTrxId').value = '';
-            }).catch(err => {
-                alert('পেমেন্ট সাবমিট ব্যর্থ: ' + err.message);
             });
-        }
-
-        function approvePayment(paymentId) {
-            const pay = paymentsDB.find(p => p.id == paymentId);
-            if(pay) {
-                const approvalTime = new Date().getTime();
-                db.ref('payments/' + paymentId + '/status').set('approved').then(() => {
-                    return db.ref('payments/' + paymentId + '/approvalTime').set(approvalTime);
-                }).then(() => {
-                    pay.status = 'approved';
-                    pay.approvalTime = approvalTime;
-
-                    const user = usersDB.find(u => u.phone === pay.phone);
-                    if(user) {
-                        db.ref('users/' + user.phone + '/paidCycleStart').set(approvalTime);
-                        user.paidCycleStart = approvalTime;
-                    }
-                    renderAdminPanel();
-                    alert('পেমেন্ট অ্যাপ্রুভ করা হয়েছে! কাস্টমারের ১ মাসের মেয়াদ বৃদ্ধি পেয়েছে।');
-                }).catch(err => {
-                    alert('এরর: ' + err.message);
-                });
-            }
-        }
-
-        function adminResetPassword(phone) {
-            const newPass = prompt('কাস্টমারের জন্য নতুন ৪ সংখ্যার পাসওয়ার্ড দিন:');
-            if (newPass && newPass.length === 4) {
-                db.ref('users/' + phone + '/pass').set(newPass).then(() => {
-                    const user = usersDB.find(u => u.phone === phone);
-                    if (user) user.pass = newPass;
-                    failedAttempts[phone] = 0;
-                    localStorage.setItem('trip_failed_attempts', JSON.stringify(failedAttempts));
-                    alert('পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!');
-                    renderAdminPanel();
-                }).catch(err => {
-                    alert('এরর: ' + err.message);
-                });
-            } else {
-                alert('সঠিক ৪ সংখ্যার পাসওয়ার্ড দিন।');
-            }
         }
 
         function logout() {
@@ -781,41 +1082,24 @@
 
         function loadVehicleInfo() {
             if (!currentUser) return;
-            const key = `veh_info_${currentUser.phone}`;
-            const info = JSON.parse(localStorage.getItem(key)) || {
-                carNo: "গাড়ি নং",
-                serial: "",
-                driver: "",
-                owner: ""
-            };
-
-            const badge = document.getElementById('headCarNoBadge');
-            const serial = document.getElementById('headSerial');
-            const driver = document.getElementById('headDriver');
-            const owner = document.getElementById('headOwner');
-
-            if(badge) badge.innerText = info.carNo || "গাড়ি নং";
-            if(serial) serial.innerText = info.serial || "তথ্য দিন...";
-            if(driver) driver.innerText = info.driver || "তথ্য দিন...";
-            if(owner) owner.innerText = info.owner || "তথ্য দিন...";
+            const info = JSON.parse(localStorage.getItem(`veh_info_${currentUser.phone}`)) || { carNo: "গাড়ি নং", serial: "", driver: "", owner: "" };
+            document.getElementById('headCarNoBadge').innerText = info.carNo || "গাড়ি নং";
+            document.getElementById('headSerial').innerText = info.serial || "তথ্য দিন...";
+            document.getElementById('headDriver').innerText = info.driver || "তথ্য দিন...";
+            document.getElementById('headOwner').innerText = info.owner || "তথ্য দিন...";
         }
 
         function openVehicleInfoModal() {
             if(!currentUser) return;
-            const key = `veh_info_${currentUser.phone}`;
-            const info = JSON.parse(localStorage.getItem(key)) || { carNo: "", serial: "", driver: "", owner: "" };
-
+            const info = JSON.parse(localStorage.getItem(`veh_info_${currentUser.phone}`)) || { carNo: "", serial: "", driver: "", owner: "" };
             document.getElementById('inputCarNo').value = info.carNo;
             document.getElementById('inputSerial').value = info.serial;
             document.getElementById('inputDriver').value = info.driver;
             document.getElementById('inputOwner').value = info.owner;
-
             document.getElementById('vehicleModal').classList.remove('hidden');
         }
 
-        function closeVehicleInfoModal() {
-            document.getElementById('vehicleModal').classList.add('hidden');
-        }
+        function closeVehicleInfoModal() { document.getElementById('vehicleModal').classList.add('hidden'); }
 
         function saveVehicleInfo(e) {
             e.preventDefault();
@@ -825,11 +1109,261 @@
                 driver: document.getElementById('inputDriver').value,
                 owner: document.getElementById('inputOwner').value
             };
-
-            const key = `veh_info_${currentUser.phone}`;
-            localStorage.setItem(key, JSON.stringify(info));
+            localStorage.setItem(`veh_info_${currentUser.phone}`, JSON.stringify(info));
             loadVehicleInfo();
             closeVehicleInfoModal();
+        }
+
+        function calculateLoanTotal() {
+            const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
+            const preview = document.getElementById('loanCalculationPreview');
+            if(amount <= 0) {
+                preview.innerText = "সার্ভিস চার্জ ও মোট প্রদেয়: পরিমাণ লিখুন...";
+                return;
+            }
+            let charge = (amount <= 500) ? 30 : 50;
+            let total = amount + charge;
+            preview.innerHTML = `লোন: ৳${amount} + সার্ভিস চার্জ: ৳${charge} = <strong>মোট প্রদেয়: ৳${total}</strong> (বিকাশ/নগদ: ${BKASH_NAGAD_LINE} | রকেট: ${ROCKET_LINE} | ব্রিলিয়ান্ট: ${BRILLIANT_LINE})`;
+        }
+
+        function calculateRechargeTotal() {
+            const amount = parseFloat(document.getElementById('rechAmount').value) || 0;
+            const preview = document.getElementById('rechargeCalculationPreview');
+            if(amount <= 0) {
+                preview.innerText = "সার্ভিস চার্জ ও মোট খরচ: পরিমাণ লিখুন...";
+                return;
+            }
+            let charge = (amount < 100) ? 10 : 15;
+            let total = amount + charge;
+            preview.innerHTML = `রিচার্জ: ৳${amount} + সার্ভিস চার্জ: ৳${charge} = <strong>মোট খরচ: ৳${total}</strong> (বিকাশ/নগদ: ${BKASH_NAGAD_LINE} | রকেট: ${ROCKET_LINE})`;
+        }
+
+        function submitLoanApplication(e) {
+            e.preventDefault();
+            
+            const activeLoans = loansDB.filter(l => l.phone === currentUser.phone && l.status !== 'paid' && l.status !== 'rejected');
+            const hasUnpaidLoan = activeLoans.some(l => l.status === 'approved' || l.status === 'pending_verification' || l.status === 'repay_pending');
+            
+            if (hasUnpaidLoan) {
+                alert('⚠️ আপনার পূর্বের লোন এখনো পরিশোধ বা ক্লিয়ার করা হয়নি! বকেয়া লোন পরিশোধ না করা পর্যন্ত নতুন লোন দেওয়া যাবে না।');
+                return;
+            }
+
+            const faceData = document.getElementById('faceCapturedData').value;
+            if(!faceData) {
+                alert('দয়া করে ক্যামেরা দিয়ে লাইভ ফেস ছবি তুলুন!');
+                return;
+            }
+
+            const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
+            if(amount < 500 || amount > 1000) {
+                alert('লোন অবশ্যই ৫০০ থেকে ১০০০ টাকার মধ্যে হতে হবে!');
+                return;
+            }
+
+            let serviceCharge = (amount <= 500) ? 30 : 50;
+            const totalPayable = amount + serviceCharge;
+            const loanId = Date.now();
+
+            const loanData = {
+                id: loanId,
+                phone: currentUser.phone,
+                name: document.getElementById('loanName').value.trim(),
+                familyName: document.getElementById('loanFamilyName').value.trim(),
+                familyPhone: document.getElementById('loanFamilyPhone').value.trim(),
+                amount, serviceCharge, totalPayable,
+                method: document.getElementById('loanMethod').value,
+                location: document.getElementById('loanLocation').value,
+                facePhoto: faceData,
+                status: 'pending_verification',
+                startTime: new Date().getTime(),
+                time: new Date().toLocaleString()
+            };
+
+            db.ref('loans/' + loanId).set(loanData).then(() => {
+                alert(`লোন আবেদন জমা হয়েছে!\nপরিমাণ: ৳${amount} + সার্ভিস চার্জ: ৳${serviceCharge} = মোট প্রদেয়: ৳${totalPayable}\nবিকাশ/নগদ: ${BKASH_NAGAD_LINE} | রকেট: ${ROCKET_LINE}`);
+                document.getElementById('loanForm').reset();
+                document.getElementById('faceCapturedData').value = '';
+                document.getElementById('faceStatusText').innerText = "ছবি তোলা হয়নি";
+                fetchAllFirebaseData(() => renderCustomerLoanStatus());
+            });
+        }
+
+        function renderCustomerLoanStatus() {
+            if(!currentUser) return;
+            const container = document.getElementById('customerLoanStatusBox');
+            if(!container) return;
+            const myLoans = loansDB.filter(l => l.phone === currentUser.phone);
+
+            container.innerHTML = '';
+            if(myLoans.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-[11px]">আপনার কোনো লোন আবেদন নেই।</p>`;
+                return;
+            }
+
+            const now = new Date().getTime();
+            const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+
+            myLoans.forEach(l => {
+                let statusBadge = "";
+                let timeInfo = "";
+
+                if (l.status === 'pending_verification') {
+                    statusBadge = `<span class="bg-amber-100 text-amber-800 px-2 py-1 rounded text-[10px] font-bold">যাচাইাধীন (Pending)</span>`;
+                    timeInfo = `<p class="text-gray-500">অনুরোধের সময়: ${l.time}</p>`;
+                } else if (l.status === 'approved') {
+                    const elapsed = now - (l.approvalTime || l.startTime || now);
+                    const remTime = sevenDaysMs - elapsed;
+                    if (remTime > 0) {
+                        const remDays = Math.floor(remTime / (24 * 60 * 60 * 1000));
+                        const remHours = Math.floor((remTime % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+                        statusBadge = `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-[10px] font-bold">অনুমোদিত (সক্রিয়)</span>`;
+                        timeInfo = `<p class="text-purple-700 font-bold">পরিশোধের সময় বাকি: ${remDays} দিন ${remHours} ঘণ্টা</p>`;
+                    } else {
+                        statusBadge = `<span class="bg-red-100 text-red-800 px-2 py-1 rounded text-[10px] font-bold">মেয়াদোত্তীর্ণ!</span>`;
+                        timeInfo = `<p class="text-red-600 font-bold">৭ দিনের সময়সীমা পার হয়ে গেছে!</p>`;
+                    }
+                } else if (l.status === 'repay_pending') {
+                    statusBadge = `<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-[10px] font-bold">পরিশোধ যাচাই হচ্ছে (TrxID: ${l.repayTrxId})</span>`;
+                } else if (l.status === 'paid') {
+                    statusBadge = `<span class="bg-green-100 text-green-800 px-2 py-1 rounded text-[10px] font-bold">পরিশোধ সম্পন্ন (Clear)</span>`;
+                } else if (l.status === 'rejected') {
+                    statusBadge = `<span class="bg-red-100 text-red-800 px-2 py-1 rounded text-[10px] font-bold">বাতিল (Rejected)</span>`;
+                }
+
+                let repayBtn = (l.status === 'approved') ? `
+                    <button type="button" onclick="openRepayModal(${l.id})" class="mt-2 bg-green-600 text-white px-3 py-1.5 rounded font-bold text-[11px] shadow hover:bg-green-700 block w-full text-center">
+                        <i class="fa-solid fa-money-bill-wave"></i> টাকা পরিশোধ করুন (বিকাশ/নগদ: ${BKASH_NAGAD_LINE} | রকেট: ${ROCKET_LINE})
+                    </button>
+                ` : '';
+
+                container.innerHTML += `
+                    <div class="p-2.5 border rounded bg-gray-50 text-[11px] space-y-1">
+                        <div class="flex justify-between items-center">
+                            <p class="font-bold text-purple-900 text-sm">লোন: ৳${l.amount} + সার্ভিস চার্জ: ৳${l.serviceCharge}</p>
+                            <div>${statusBadge}</div>
+                        </div>
+                        <p class="font-bold text-gray-800">মোট প্রদেয় টাকা: <span class="text-green-700">৳${l.totalPayable}</span> (${l.method})</p>
+                        ${timeInfo}
+                        ${repayBtn}
+                    </div>
+                `;
+            });
+        }
+
+        let selectedRepayLoanId = null;
+        function openRepayModal(loanId) {
+            selectedRepayLoanId = loanId;
+            document.getElementById('repayLoanId').value = loanId;
+            document.getElementById('repayModal').classList.remove('hidden');
+        }
+        function closeRepayModal() {
+            document.getElementById('repayModal').classList.add('hidden');
+        }
+
+        function submitLoanRepayment(e) {
+            e.preventDefault();
+            const loanId = document.getElementById('repayLoanId').value;
+            const method = document.getElementById('repayMethod').value;
+            const trxId = document.getElementById('repayTrxId').value.trim();
+
+            db.ref('loans/' + loanId).update({
+                repayMethod: method,
+                repayTrxId: trxId,
+                status: 'repay_pending'
+            }).then(() => {
+                alert('লোন পরিশোধের তথ্য জমা হয়েছে! এডমিন যাচাই করে ক্লিয়ার করে দেবেন।');
+                closeRepayModal();
+                fetchAllFirebaseData(() => renderCustomerLoanStatus());
+            });
+        }
+
+        function submitRechargeRequest(e) {
+            e.preventDefault();
+            
+            const myReches = rechargesDB.filter(r => r.userPhone === currentUser.phone && r.status !== 'completed' && r.status !== 'rejected');
+            if (myReches.length > 0) {
+                alert('⚠️ আপনার আগের ফ্লেক্সিলোড রিকোয়েস্ট এখনো সম্পন্ন বা ক্লিয়ার হয়নি। নতুন রিচার্জ নেওয়া যাবে না।');
+                return;
+            }
+
+            const faceData = document.getElementById('rechFaceCapturedData').value;
+            if(!faceData) {
+                alert('দয়া করে ফ্লেক্সিলোডের জন্য লাইভ ফেস ছবি তুলুন!');
+                return;
+            }
+
+            const amount = parseFloat(document.getElementById('rechAmount').value) || 0;
+            if(amount < 10 || amount > 300) {
+                alert('ফ্লেক্সিলোড ১০ টাকা থেকে ৩০০ টাকার মধ্যে হতে হবে!');
+                return;
+            }
+
+            let serviceCharge = (amount < 100) ? 10 : 15;
+            const totalCost = amount + serviceCharge;
+
+            const rechId = Date.now();
+            const rechData = {
+                id: rechId,
+                userPhone: currentUser.phone,
+                userName: currentUser.name,
+                operator: document.getElementById('rechOperator').value,
+                phone: document.getElementById('rechPhone').value.trim(),
+                amount, serviceCharge, totalCost,
+                facePhoto: faceData,
+                startTime: new Date().getTime(),
+                status: 'pending_recharge',
+                time: new Date().toLocaleString()
+            };
+
+            db.ref('recharges/' + rechId).set(rechData).then(() => {
+                alert(`ফ্লেক্সিলোড রিকোয়েস্ট পাঠানো হয়েছে!\nরিচার্জ: ৳${amount} + সার্ভিস চার্জ: ৳${serviceCharge} = মোট খরচ: ৳${totalCost}\nবিকাশ/নগদ: ${BKASH_NAGAD_LINE} | রকেট: ${ROCKET_LINE}`);
+                document.getElementById('rechargeForm').reset();
+                document.getElementById('rechFaceCapturedData').value = '';
+                document.getElementById('rechFaceStatusText').innerText = "ছবি তোলা হয়নি";
+                fetchAllFirebaseData(() => renderCustomerRecharges());
+            });
+        }
+
+        function renderCustomerRecharges() {
+            if(!currentUser) return;
+            const container = document.getElementById('customerRechargeHistory');
+            if(!container) return;
+            const myReches = rechargesDB.filter(r => r.userPhone === currentUser.phone);
+            
+            container.innerHTML = '';
+            if(myReches.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-[11px]">কোনো ফ্লেক্সিলোড হিস্ট্রি নেই।</p>`;
+                return;
+            }
+
+            const now = new Date().getTime();
+            myReches.forEach(r => {
+                const twentyMinMs = 20 * 60 * 1000;
+                const elapsed = now - (r.startTime || now);
+                
+                let statusBadge = "";
+                if (r.status === 'pending_recharge') {
+                    if (elapsed < twentyMinMs) {
+                        const remMin = Math.ceil((twentyMinMs - elapsed) / (60 * 1000));
+                        statusBadge = `<span class="bg-amber-100 text-amber-800 px-2 py-1 rounded text-[10px] font-bold">প্রসেসিং (সময় বাকি: ${remMin} মিনিট)</span>`;
+                    } else {
+                        statusBadge = `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-[10px] font-bold">কাউন্টডাউন শুরু (২০ মিনিট পার হয়েছে)</span>`;
+                    }
+                } else {
+                    statusBadge = `<span class="bg-green-100 text-green-800 px-2 py-1 rounded text-[10px] font-bold">সম্পন্ন (Clear)</span>`;
+                }
+
+                container.innerHTML += `
+                    <div class="p-2 border rounded bg-gray-50 text-[11px] flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-blue-900">${r.operator}: ৳${r.amount} + চার্জ ৳${r.serviceCharge} = মোট ৳${r.totalCost} (${r.phone})</p>
+                            <p class="text-gray-500">অনুরোধের সময়: ${r.time} | বিকাশ/নগদ: ${BKASH_NAGAD_LINE} | রকেট: ${ROCKET_LINE}</p>
+                        </div>
+                        <div>${statusBadge}</div>
+                    </div>
+                `;
+            });
         }
 
         function saveTrip(e) {
@@ -850,30 +1384,19 @@
 
             const tripId = editId ? editId : Date.now();
             const tripData = {
-                id: tripId,
-                userPhone: currentUser.phone,
+                id: tripId, userPhone: currentUser.phone,
                 date, route, rent, fuel, toll, driver, police, labor, others,
                 cost: totalCost, profit: netProfit
             };
 
             db.ref('trips/' + tripId).set(tripData).then(() => {
-                fetchAllFirebaseData(() => {
-                    resetForm();
-                    if (currentUser.phone === ADMIN_PHONE) {
-                        renderAdminPanel();
-                    } else {
-                        renderTrips();
-                    }
-                });
-            }).catch(err => {
-                alert('হিসাব সেভ ব্যর্থ: ' + err.message);
+                fetchAllFirebaseData(() => { resetForm(); renderTrips(); });
             });
         }
 
         function editTrip(id) {
             const trip = tripsDB.find(t => t.id == id);
             if (!trip) return;
-
             document.getElementById('editTripId').value = trip.id;
             document.getElementById('tripDate').value = trip.date;
             document.getElementById('tripRoute').value = trip.route;
@@ -889,7 +1412,6 @@
             document.getElementById('saveBtn').innerText = 'আপডেট করুন';
             document.getElementById('saveBtn').className = 'flex-1 bg-amber-600 text-white font-bold py-2.5 rounded shadow';
             document.getElementById('cancelEditBtn').classList.remove('hidden');
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -911,14 +1433,10 @@
             listContainer.innerHTML = '';
 
             let totalRent = 0, totalCost = 0, totalProfit = 0;
-
             userTrips.forEach(trip => {
-                totalRent += trip.rent;
-                totalCost += trip.cost;
-                totalProfit += trip.profit;
-
+                totalRent += trip.rent; totalCost += trip.cost; totalProfit += trip.profit;
                 listContainer.innerHTML += `
-                    <div class="bg-white border border-gray-200 rounded p-3 text-xs shadow-sm flex justify-between items-center">
+                    <div class="bg-white border rounded p-3 text-xs shadow-sm flex justify-between items-center">
                         <div>
                             <p class="font-bold text-purple-900">${trip.route}</p>
                             <p class="text-gray-500">${trip.date}</p>
@@ -930,14 +1448,13 @@
                         <div class="text-right">
                             <span class="block font-bold text-blue-700">লাভ: ৳${trip.profit}</span>
                             <div class="mt-1 space-x-2">
-                                <button onclick="editTrip(${trip.id})" class="text-amber-600 hover:underline font-semibold"><i class="fa-solid fa-pen-to-square"></i> এডিট</button>
-                                <button onclick="deleteTrip(${trip.id})" class="text-red-600 hover:underline"><i class="fa-solid fa-trash"></i> ডিলিট</button>
+                                <button type="button" onclick="editTrip(${trip.id})" class="text-amber-600 font-semibold">এডিট</button>
+                                <button type="button" onclick="deleteTrip(${trip.id})" class="text-red-600">ডিলিট</button>
                             </div>
                         </div>
                     </div>
                 `;
             });
-
             document.getElementById('sumTotalRent').innerText = `৳ ${totalRent}`;
             document.getElementById('sumTotalCost').innerText = `৳ ${totalCost}`;
             document.getElementById('sumNetProfit').innerText = `৳ ${totalProfit}`;
@@ -945,22 +1462,11 @@
         }
 
         function deleteTrip(id) {
-            if (confirm('আপনি কি এই হিসাবটি মুছে ফেলতে চান?')) {
-                db.ref('trips/' + id).remove().then(() => {
-                    fetchAllFirebaseData(() => {
-                        if (currentUser && currentUser.phone === ADMIN_PHONE) {
-                            renderAdminPanel();
-                        } else {
-                            renderTrips();
-                        }
-                    });
-                }).catch(err => {
-                    alert('মুছে ফেলতে ব্যর্থ: ' + err.message);
-                });
+            if (confirm('হিসাবটি মুছে ফেলতে চান?')) {
+                db.ref('trips/' + id).remove().then(() => fetchAllFirebaseData(() => renderTrips()));
             }
         }
 
-        // Party Management Logic
         function openPartyModal(id = null) {
             if(id) {
                 const party = partyDB.find(p => p.id == id);
@@ -969,53 +1475,36 @@
                     document.getElementById('partyName').value = party.name;
                     document.getElementById('partyPhone').value = party.phone;
                     document.getElementById('partyAddress').value = party.address || '';
-                    document.getElementById('partyModalTitle').innerText = 'পার্টির তথ্য এডিট করুন';
                 }
             } else {
                 document.getElementById('editPartyId').value = '';
                 document.getElementById('partyName').value = '';
                 document.getElementById('partyPhone').value = '';
                 document.getElementById('partyAddress').value = '';
-                document.getElementById('partyModalTitle').innerText = 'নতুন পার্টি যোগ করুন';
             }
             document.getElementById('partyModal').classList.remove('hidden');
         }
 
-        function closePartyModal() {
-            document.getElementById('partyModal').classList.add('hidden');
-        }
+        function closePartyModal() { document.getElementById('partyModal').classList.add('hidden'); }
 
         function savePartyContact(e) {
             e.preventDefault();
             const editId = document.getElementById('editPartyId').value;
-            const name = document.getElementById('partyName').value.trim();
-            const phone = document.getElementById('partyPhone').value.trim();
-            const address = document.getElementById('partyAddress').value.trim();
-
             const partyId = editId ? editId : Date.now();
             const partyData = {
-                id: partyId,
-                userPhone: currentUser.phone,
-                name, phone, address
+                id: partyId, userPhone: currentUser.phone,
+                name: document.getElementById('partyName').value.trim(),
+                phone: document.getElementById('partyPhone').value.trim(),
+                address: document.getElementById('partyAddress').value.trim()
             };
-
             db.ref('parties/' + partyId).set(partyData).then(() => {
-                fetchAllFirebaseData(() => {
-                    closePartyModal();
-                    renderPartyDirectory();
-                });
-            }).catch(err => {
-                alert('পার্টির তথ্য সেভ ব্যর্থ: ' + err.message);
+                fetchAllFirebaseData(() => { closePartyModal(); renderPartyDirectory(); });
             });
         }
 
         function deletePartyContact(id) {
-            if (confirm('আপনি কি এই পার্টির তথ্যটি মুছে ফেলতে চান?')) {
-                db.ref('parties/' + id).remove().then(() => {
-                    fetchAllFirebaseData(() => {
-                        renderPartyDirectory();
-                    });
-                });
+            if (confirm('মুছে ফেলতে চান?')) {
+                db.ref('parties/' + id).remove().then(() => fetchAllFirebaseData(() => renderPartyDirectory()));
             }
         }
 
@@ -1024,31 +1513,28 @@
             const container = document.getElementById('partyDirectoryList');
             if(!container) return;
             const myParties = partyDB.filter(p => p.userPhone === currentUser.phone);
-
             container.innerHTML = '';
             if (myParties.length === 0) {
-                container.innerHTML = `<p class="text-gray-400 text-center py-6 text-xs">কোন পার্টির নাম্বার সেভ করা নেই। ওপরের বাটনে চাপুন।</p>`;
+                container.innerHTML = `<p class="text-gray-400 text-center py-6 text-xs">কোনো পার্টির নাম্বার সেভ করা নেই।</p>`;
                 return;
             }
-
             myParties.forEach(p => {
                 container.innerHTML += `
                     <div class="bg-white border p-2.5 rounded-md flex justify-between items-center text-xs shadow-sm">
                         <div>
                             <strong class="text-gray-900 font-bold block text-sm">${p.name}</strong>
-                            <span class="text-purple-700 font-semibold block mt-0.5"><i class="fa-solid fa-phone"></i> ${p.phone}</span>
-                            ${p.address ? `<p class="text-gray-500 text-[11px] mt-0.5"><i class="fa-solid fa-location-dot"></i> ${p.address}</p>` : ''}
+                            <span class="text-purple-700 font-semibold"><i class="fa-solid fa-phone"></i> ${p.phone}</span>
+                            ${p.address ? `<p class="text-gray-500 text-[11px]">${p.address}</p>` : ''}
                         </div>
                         <div class="space-x-1">
-                            <button onclick="openPartyModal(${p.id})" class="bg-amber-100 text-amber-800 font-bold px-2 py-1 rounded hover:bg-amber-200"><i class="fa-solid fa-pen"></i> এডিট</button>
-                            <button onclick="deletePartyContact(${p.id})" class="bg-red-100 text-red-600 font-bold px-2 py-1 rounded hover:bg-red-200"><i class="fa-solid fa-trash"></i> ডিলিট</button>
+                            <button type="button" onclick="openPartyModal(${p.id})" class="bg-amber-100 text-amber-800 font-bold px-2 py-1 rounded">এডিট</button>
+                            <button type="button" onclick="deletePartyContact(${p.id})" class="bg-red-100 text-red-600 font-bold px-2 py-1 rounded">ডিলিট</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        // Contact & Emergency Tab Logic
         function showContactTab(cat) {
             const container = document.getElementById('contactTabContent');
             const searchBox = document.getElementById('districtSearchBox');
@@ -1059,30 +1545,20 @@
                 renderDistrictList(DISTRICTS_DATA);
             } else {
                 searchBox.classList.add('hidden');
-                if (cat === 'police') {
-                    container.innerHTML = `
-                        <h4 class="font-bold text-blue-900 border-b pb-1 mb-2">জরুরী পুলিশ কন্ট্রোল রুম (৪ জন কর্মকর্তা)</h4>
-                        <p class="py-1">জাতীয় জরুরী সেবা: <strong>999</strong></p>
-                        <p class="py-1">ডিআইজি হাইওয়ে পুলিশ: <strong>01320-000001</strong></p>
-                        <p class="py-1">এসপি হাইওয়ে (পূর্বঞ্চল): <strong>01713-333444</strong></p>
-                        <p class="py-1">টাঙ্গাইল ট্রাফিক কন্ট্রোল: <strong>01712-555666</strong></p>
-                        <p class="py-1">ঢাকা মেট্রোপলিটন পুলিশ কন্ট্রোল: <strong>02-223388111</strong></p>
-                    `;
-                } else if (cat === 'fire') {
-                    container.innerHTML = `
-                        <h4 class="font-bold text-red-900 border-b pb-1 mb-2">ফায়ার সার্ভিস স্টেশন</h4>
-                        <p class="py-1">ফায়ার সার্ভিস হেডকোয়ার্টার কন্ট্রোল: <strong>02-223355555</strong></p>
-                        <p class="py-1">জরুরী রেসকিউ হটলাইন: <strong>999</strong></p>
-                        <p class="py-1">টাঙ্গাইল ফায়ার স্টেশন: <strong>01711-223344</strong></p>
-                    `;
-                } else if (cat === 'hospital') {
-                    container.innerHTML = `
-                        <h4 class="font-bold text-green-900 border-b pb-1 mb-2">জরুরী হাসপাতাল কন্টাক্ট</h4>
-                        <p class="py-1">ঢাকা মেডিকেল কলেজ হাসপাতাল: <strong>02-55165088</strong></p>
-                        <p class="py-1">টাঙ্গাইল জেনারেল হাসপাতাল: <strong>01700-000000</strong></p>
-                        <p class="py-1">জাতীয় অর্থোপেডিক (পঙ্গু) হাসপাতাল: <strong>02-9112555</strong></p>
-                    `;
-                }
+                let list = (cat === 'police') ? POLICE_DATA : (cat === 'fire' ? FIRE_DATA : HOSPITAL_DATA);
+                let title = (cat === 'police') ? 'জরুরী পুলিশ কন্টাক্ট' : (cat === 'fire' ? 'ফায়ার সার্ভিস স্টেশন' : 'জরুরী হাসপাতাল');
+                
+                container.innerHTML = `
+                    <h4 class="font-bold text-purple-900 border-b pb-1 mb-2">${title}</h4>
+                    <div class="space-y-1.5">
+                        ${list.map(item => `
+                            <div class="flex justify-between items-center border-b py-1.5">
+                                <span>${item.name}</span>
+                                <a href="tel:${item.phone}" class="bg-blue-600 text-white font-bold px-2.5 py-1 rounded text-[11px]"><i class="fa-solid fa-phone"></i> ${item.phone}</a>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
             }
         }
 
@@ -1090,12 +1566,15 @@
             const container = document.getElementById('contactTabContent');
             if(!container) return;
             container.innerHTML = `
-                <h4 class="font-bold text-purple-900 border-b pb-1 mb-2">ঢাকা থেকে ৬৪ জেলার দূরত্ব (মোট: ${list.length}টি)</h4>
-                <ul class="space-y-1">
+                <h4 class="font-bold text-purple-900 border-b pb-1 mb-2">ঢাকা থেকে ৬৪ জেলার দূরত্ব ও লোকেশন</h4>
+                <ul class="space-y-2">
                     ${list.map(d => `
-                        <li class="flex justify-between border-b py-1 text-xs">
-                            <span>ঢাকা - <strong>${d.name}</strong></span> 
-                            <strong class="text-purple-700">${d.dist}</strong>
+                        <li class="border-b pb-1.5 text-xs">
+                            <div class="flex justify-between font-bold">
+                                <span>ঢাকা - ${d.name}</span>
+                                <span class="text-purple-700">${d.dist}</span>
+                            </div>
+                            <p class="text-gray-500 text-[11px]">${d.loc}</p>
                         </li>
                     `).join('')}
                 </ul>
@@ -1103,18 +1582,19 @@
         }
 
         function filterDistricts() {
-            const searchInput = document.getElementById('distSearch');
-            if(!searchInput) return;
-            const query = searchInput.value.trim().toLowerCase();
+            const query = document.getElementById('distSearch').value.trim().toLowerCase();
             const filtered = DISTRICTS_DATA.filter(d => d.name.toLowerCase().includes(query));
             renderDistrictList(filtered);
         }
 
         function renderAdminPanel() {
+            if (!currentUser || currentUser.phone !== ADMIN_PHONE) return;
+
             fetchAllFirebaseData(() => {
                 const adminContainer = document.getElementById('adminUserList');
                 const totalCarsBadge = document.getElementById('adminTotalCarsCount');
                 const unpaidBadge = document.getElementById('adminUnpaidCount');
+                const searchQuery = document.getElementById('adminSearchInput').value.trim().toLowerCase();
                 if(!adminContainer) return;
                 adminContainer.innerHTML = '';
 
@@ -1126,11 +1606,10 @@
                     const daysPassed = (now - regTime) / (1000 * 60 * 60 * 24);
                     const userPayment = paymentsDB.find(p => p.phone === user.phone && p.status === 'approved');
                     let isUnpaid = false;
-                    if (daysPassed > 5) {
+                    if (daysPassed > 5 && !user.manualActive) {
                         if (!userPayment) isUnpaid = true;
                         else {
-                            const lastPayTime = userPayment.approvalTime || user.paidCycleStart || regTime;
-                            if ((now - lastPayTime) / (1000 * 60 * 60 * 24) > 30) isUnpaid = true;
+                            if ((now - (userPayment.approvalTime || user.paidCycleStart || regTime)) / (1000 * 60 * 60 * 24) > 30) isUnpaid = true;
                         }
                     }
                     if (isUnpaid) unpaidCount++;
@@ -1139,62 +1618,185 @@
                 if (totalCarsBadge) totalCarsBadge.innerText = usersDB.length;
                 if (unpaidBadge) unpaidBadge.innerText = unpaidCount;
 
-                if (usersDB.length === 0) {
-                    adminContainer.innerHTML = `<p class="text-xs text-gray-500">কোন কাস্টমার বা গাড়ি নিবন্ধিত নেই।</p>`;
-                    return;
-                }
+                let pendingLoans = loansDB.filter(l => l.status === 'pending_verification' || l.status === 'repay_pending');
+                let pendingReches = rechargesDB.filter(r => r.status === 'pending_recharge');
 
-                usersDB.forEach(user => {
+                let adminHtml = `<div class="bg-purple-50 p-3 rounded border border-purple-200 space-y-2">
+                    <h4 class="font-bold text-purple-900 border-b pb-1">🔔 লোন ও ফ্লেক্সিলোড রিকোয়েস্ট (${pendingLoans.length + pendingReches.length}টি)</h4>`;
+                
+                pendingLoans.forEach(l => {
+                    if (l.status === 'pending_verification') {
+                        adminHtml += `<div class="bg-white p-2 rounded border text-xs space-y-1">
+                            <div class="flex justify-between items-center">
+                                <strong>লোন আবেদন:</strong> ${l.name} (${l.phone}) - ৳${l.amount} + চার্জ ৳${l.serviceCharge} = মোট ৳${l.totalPayable}
+                                <div class="space-x-1">
+                                    <button type="button" onclick="approveLoan(${l.id})" class="bg-green-600 text-white px-2 py-1 rounded text-[10px] font-bold">অনুমোদন</button>
+                                    <button type="button" onclick="rejectLoan(${l.id})" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold">রিজেক্ট</button>
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-gray-500">মাধ্যম: ${l.method} | পরিবার: ${l.familyName} (${l.familyPhone})</p>
+                            ${l.facePhoto ? `<img src="${l.facePhoto}" class="w-16 h-16 object-cover rounded mt-1 border" alt="Face">` : ''}
+                        </div>`;
+                    } else if (l.status === 'repay_pending') {
+                        adminHtml += `<div class="bg-white p-2 rounded border text-xs flex justify-between items-center">
+                            <div>
+                                <strong class="text-green-700">লোন পরিশোধ রিকোয়েস্ট:</strong> ${l.name} (${l.phone}) - মোট ৳${l.totalPayable}
+                                <p class="text-[10px] text-gray-600">মাধ্যম: ${l.repayMethod} | TrxID: <strong>${l.repayTrxId}</strong></p>
+                            </div>
+                            <button type="button" onclick="clearLoan(${l.id})" class="bg-green-600 text-white px-2 py-1 rounded text-[10px] font-bold">পরিশোধ নিশ্চিত (Clear)</button>
+                        </div>`;
+                    }
+                });
+
+                pendingReches.forEach(r => {
+                    adminHtml += `<div class="bg-white p-2 rounded border text-xs space-y-1">
+                        <div class="flex justify-between items-center">
+                            <strong>ফ্লেক্সিলোড:</strong> ${r.operator} - ৳${r.amount} + চার্জ ৳${r.serviceCharge} = মোট ৳${r.totalCost} (${r.phone})
+                            <div class="space-x-1">
+                                <button type="button" onclick="approveRecharge(${r.id})" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">সম্পন্ন (Clear)</button>
+                                <button type="button" onclick="rejectRecharge(${r.id})" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold">রিজেক্ট</button>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-gray-500">ইউজার: ${r.userName} (${r.userPhone})</p>
+                        ${r.facePhoto ? `<img src="${r.facePhoto}" class="w-16 h-16 object-cover rounded mt-1 border" alt="Face">` : ''}
+                    </div>`;
+                });
+                adminHtml += `</div>`;
+
+                const filteredUsers = usersDB.filter(u => u.phone.includes(searchQuery) || (u.name && u.name.toLowerCase().includes(searchQuery)));
+
+                filteredUsers.forEach(user => {
                     const userTrips = tripsDB.filter(t => t.userPhone === user.phone);
                     const vehInfo = JSON.parse(localStorage.getItem(`veh_info_${user.phone}`)) || { carNo: "নেই", serial: "নেই", owner: "তথ্য নেই" };
                     const regTime = user.regDate || now;
                     const daysPassed = (now - regTime) / (1000 * 60 * 60 * 24);
                     const userPayment = paymentsDB.find(p => p.phone === user.phone && p.status === 'approved');
                     let isUnpaid = false;
-                    if (daysPassed > 5) {
+                    if (daysPassed > 5 && !user.manualActive) {
                         if (!userPayment) isUnpaid = true;
                         else {
-                            const lastPayTime = userPayment.approvalTime || user.paidCycleStart || regTime;
-                            if ((now - lastPayTime) / (1000 * 60 * 60 * 24) > 30) isUnpaid = true;
+                            if ((now - (userPayment.approvalTime || user.paidCycleStart || regTime)) / (1000 * 60 * 60 * 24) > 30) isUnpaid = true;
                         }
                     }
-                    const totalRent = userTrips.reduce((sum, t) => sum + t.rent, 0);
                     const pendingPay = paymentsDB.find(p => p.phone === user.phone && p.status === 'pending');
-                    const isLockedOut = (failedAttempts[user.phone] || 0) >= 5;
+                    const isLockedOut = (Number(user.failedAttempts) || 0) >= 5;
 
-                    adminContainer.innerHTML += `
+                    let totalTripRent = 0;
+                    userTrips.forEach(t => totalTripRent += t.rent);
+
+                    adminHtml += `
                         <div class="bg-white border rounded p-3 shadow-sm text-xs space-y-2">
                             <div class="flex justify-between items-center border-b pb-2">
                                 <div>
                                     <strong class="text-purple-900 text-sm font-bold">${user.name}</strong> (${user.phone})
-                                    <p class="text-[11px] text-gray-600 mt-0.5">গাড়ি নম্বর/সিরিয়াল: <strong class="text-blue-800">${vehInfo.carNo} - ${vehInfo.serial}</strong></p>
-                                    <p class="text-[11px] text-gray-600">মালিকের নাম: <strong class="text-green-800">${vehInfo.owner}</strong></p>
-                                    <p class="text-[11px] mt-0.5">স্ট্যাটাস: <strong class="${isUnpaid ? 'text-red-600' : 'text-green-600'}">${isUnpaid ? 'মেয়াদ শেষ / ২০ টাকা বকেয়া' : 'সক্রিয় / পেমেন্টকৃত'}</strong></p>
-                                    ${isLockedOut ? `<p class="text-[11px] text-red-600 font-bold mt-1">⚠️ ৫ বার ভুল পাসওয়ার্ড দেওয়ায় লক! <button onclick="adminResetPassword('${user.phone}')" class="bg-blue-600 text-white px-1.5 py-0.5 rounded ml-1">পাসওয়ার্ড রিসেট করুন</button></p>` : ''}
-                                    ${pendingPay ? `<p class="text-[11px] text-amber-600 font-bold mt-1">পেমেন্ট রিকোয়েস্ট: (${pendingPay.senderNo}), TrxID: (${pendingPay.trxId}) <button onclick="approvePayment(${pendingPay.id})" class="bg-green-600 text-white px-1.5 py-0.5 rounded ml-1">অ্যাপ্রুভ (১ মাস বাড়ান)</button></p>` : ''}
-                                </div>
-                                <div class="text-right">
-                                    <span class="bg-purple-100 text-purple-900 text-[11px] font-bold px-2 py-1 rounded block mb-1">মোট ট্রিপ: ${userTrips.length} টি</span>
-                                    <span class="bg-green-100 text-green-800 text-[11px] font-bold px-2 py-1 rounded block">মোট আয়: ৳${totalRent}</span>
-                                    <button onclick="adminResetPassword('${user.phone}')" class="mt-2 bg-amber-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">পাসওয়ার্ড রিসেট</button>
-                                </div>
-                            </div>
-                            <div class="space-y-1 bg-gray-50 p-2 rounded">
-                                <p class="font-bold text-gray-700">কাস্টমারের ট্রিপসমূহ (বাতিল করার সুবিধা):</p>
-                                ${userTrips.length === 0 ? '<p class="text-gray-400 text-[10px]">কোন ট্রিপ এন্ট্রি নেই</p>' : ''}
-                                ${userTrips.map(t => `
-                                    <div class="flex justify-between items-center text-[11px] border-b border-gray-200 py-1">
-                                        <span>${t.date} | ${t.route} | <strong class="text-green-700">৳${t.rent}</strong></span>
-                                        <button onclick="deleteTrip(${t.id})" class="bg-red-500 text-white font-bold px-2 py-0.5 rounded text-[10px] hover:bg-red-600">
-                                            <i class="fa-solid fa-trash"></i> বাতিল
+                                    <p class="text-[11px] text-blue-800 font-bold">পাসওয়ার্ড (পিন): ${user.pass || 'নেই'}</p>
+                                    <p class="text-[11px] text-gray-600 mt-0.5">গাড়ি নম্বর: <strong>${vehInfo.carNo} - ${vehInfo.serial}</strong></p>
+                                    <p class="text-[11px] text-gray-600">মালিকের নাম: <strong>${vehInfo.owner}</strong></p>
+                                    <p class="text-[11px] mt-0.5">স্ট্যাটাস: <strong class="${isUnpaid ? 'text-red-600' : 'text-green-600'}">${isUnpaid ? 'মেয়াদ শেষ / বকেয়া' : 'সক্রিয়'}</strong></p>
+                                    
+                                    <div class="mt-1 flex items-center space-x-2">
+                                        <span class="text-[10px] font-bold">অ্যাকাউন্ট অন/অফ:</span>
+                                        <button type="button" onclick="toggleManualActive('${user.phone}', ${!user.manualActive})" class="px-2 py-0.5 rounded text-[10px] font-bold ${user.manualActive ? 'bg-green-600 text-white' : 'bg-gray-400 text-white'}">
+                                            ${user.manualActive ? 'ON (চালু)' : 'OFF (বন্ধ)'}
                                         </button>
                                     </div>
-                                `).join('')}
+
+                                    ${isLockedOut ? `<p class="text-[11px] text-red-600 font-bold mt-1">⚠️ লক! <button type="button" onclick="adminResetUser('${user.phone}')" class="bg-amber-600 text-white px-1.5 py-0.5 rounded ml-1">আনলক</button></p>` : ''}
+                                    ${pendingPay ? `<p class="text-[11px] text-amber-600 font-bold mt-1">পেমেন্ট: (${pendingPay.senderNo}), TrxID: (${pendingPay.trxId}) <button type="button" onclick="approvePayment(${pendingPay.id})" class="bg-green-600 text-white px-1.5 py-0.5 rounded ml-1">অ্যাপ্রুভ</button></p>` : ''}
+                                </div>
+                                <div class="text-right space-y-1">
+                                    <span class="bg-purple-100 text-purple-900 text-[11px] font-bold px-2 py-1 rounded block">ট্রিপ: ${userTrips.length} টি | মোট আয়: ৳${totalTripRent}</span>
+                                    <button type="button" onclick="adminChangePassword('${user.phone}')" class="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold block w-full"><i class="fa-solid fa-key"></i> পাসওয়ার্ড বদল</button>
+                                    <button type="button" onclick="adminDeleteUser('${user.phone}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold block w-full"><i class="fa-solid fa-trash"></i> ডিলিট</button>
+                                </div>
                             </div>
                         </div>
                     `;
                 });
+
+                adminContainer.innerHTML = adminHtml;
             });
+        }
+
+        function toggleManualActive(phone, status) {
+            db.ref('users/' + phone + '/manualActive').set(status).then(() => {
+                alert('অ্যাকাউন্ট স্ট্যাটাস আপডেট করা হয়েছে!');
+                renderAdminPanel();
+            });
+        }
+
+        function approveLoan(id) {
+            const approvalTime = new Date().getTime();
+            db.ref('loans/' + id).update({ status: 'approved', approvalTime }).then(() => {
+                alert('লোন অনুমোদিত হয়েছে!');
+                renderAdminPanel();
+            });
+        }
+        function rejectLoan(id) {
+            db.ref('loans/' + id + '/status').set('rejected').then(() => {
+                alert('লোন আবেদন রিজেক্ট করা হয়েছে!');
+                renderAdminPanel();
+            });
+        }
+        function clearLoan(id) {
+            db.ref('loans/' + id + '/status').set('paid').then(() => {
+                alert('লোন সফলভাবে পরিশোধ ও ক্লিয়ার করা হয়েছে! এখন কাস্টমার নতুন লোন নিতে পারবে।');
+                renderAdminPanel();
+            });
+        }
+
+        function approveRecharge(id) {
+            db.ref('recharges/' + id + '/status').set('completed').then(() => {
+                alert('ফ্লেক্সিলোড সম্পন্ন ও ক্লিয়ার হয়েছে! এখন কাস্টমার নতুন রিচার্জ নিতে পারবে।');
+                renderAdminPanel();
+            });
+        }
+        function rejectRecharge(id) {
+            db.ref('recharges/' + id + '/status').set('rejected').then(() => {
+                alert('ফ্লেক্সিলোড রিজেক্ট করা হয়েছে!');
+                renderAdminPanel();
+            });
+        }
+
+        function approvePayment(paymentId) {
+            const pay = paymentsDB.find(p => p.id == paymentId);
+            if(pay) {
+                const approvalTime = new Date().getTime();
+                db.ref('payments/' + paymentId + '/status').set('approved').then(() => {
+                    return db.ref('payments/' + paymentId + '/approvalTime').set(approvalTime);
+                }).then(() => {
+                    renderAdminPanel();
+                    alert('পেমেন্ট অ্যাপ্রুভ করা হয়েছে!');
+                });
+            }
+        }
+
+        function adminResetUser(phone) {
+            db.ref('users/' + phone).update({ failedAttempts: 0 }).then(() => {
+                alert('অ্যাকাউন্ট আনলক করা হয়েছে!');
+                renderAdminPanel();
+            });
+        }
+
+        function adminChangePassword(phone) {
+            const newPass = prompt('নতুন ৪ সংখ্যার পাসওয়ার্ড দিন:');
+            if (newPass && newPass.length === 4) {
+                db.ref('users/' + phone).update({ pass: newPass, failedAttempts: 0 }).then(() => {
+                    alert('পাসওয়ার্ড পরিবর্তিত হয়েছে!');
+                    renderAdminPanel();
+                });
+            } else {
+                alert('সঠিক ৪ সংখ্যার পাসওয়ার্ড দিন।');
+            }
+        }
+
+        function adminDeleteUser(phone) {
+            if (confirm('⚠️ সত্যিই এই কাস্টমার ডিলিট করতে চান?')) {
+                db.ref('users/' + phone).remove().then(() => {
+                    alert('ডিলিট সম্পন্ন!');
+                    renderAdminPanel();
+                });
+            }
         }
     </script>
 </body>
