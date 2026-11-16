@@ -1798,6 +1798,63 @@
                 });
             }
         }
+<!-- AI Voice & Messaging Section -->
+<div class="bg-white p-4 rounded-xl shadow-md mt-6 border border-purple-100">
+    <h3 class="text-lg font-bold text-purple-800 mb-3"><i class="fas fa-robot"></i> এআই ভয়েস ও কাস্টমার মেসেজিং</h3>
+    <div class="bg-purple-50 p-3 rounded-lg mb-3">
+        <button onclick="startAIVoiceChat()" class="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold text-sm shadow">
+            <i class="fas fa-microphone"></i> ভয়েস চ্যাট শুরু করুন
+        </button>
+        <span id="aiStatusText" class="text-xs text-purple-700 ml-2 font-semibold"></span>
+        <div id="aiResponseBox" class="mt-2 p-2 bg-white rounded border text-xs hidden"></div>
+    </div>
+    <div class="border-t pt-3">
+        <input type="text" id="targetCustomerPhone" placeholder="কাস্টমারের নম্বর (017XXXXXXXX)" class="w-full p-2 border rounded mb-2 text-sm">
+        <textarea id="customSmsText" rows="2" placeholder="মেসেজ লিখুন..." class="w-full p-2 border rounded mb-2 text-sm"></textarea>
+        <button onclick="sendCustomerMessage()" class="w-full bg-blue-600 text-white p-2 rounded-lg text-sm font-semibold shadow">
+            <i class="fas fa-paper-plane"></i> হোয়াটসঅ্যাপে মেসেজ পাঠান
+        </button>
+    </div>
+</div>
+
+<script>
+    function startAIVoiceChat() {
+        const statusText = document.getElementById('aiStatusText');
+        const responseBox = document.getElementById('aiResponseBox');
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            alert('আপনার ব্রাউজার ভয়েস সমর্থন করে না। ক্রোম ব্রাউজার ব্যবহার করুন।');
+            return;
+        }
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'bn-BD';
+        statusText.innerText = "শুনছি... কথা বলুন...";
+        recognition.start();
+
+        recognition.onresult = function(event) {
+            const speechResult = event.results[0][0].transcript;
+            let aiReply = "আপনার কথা বুঝতে পেরেছি। 'টিপের হিসাব' থেকে সহায়তা করা হচ্ছে।";
+            if (speechResult.includes('লোন')) {
+                aiReply = "লোন পেতে হলে পূর্বের বকেয়া পরিশোধ থাকতে হবে।";
+            }
+            responseBox.innerHTML = `<b>কথা:</b> ${speechResult}<br><b>এআই:</b> ${aiReply}`;
+            responseBox.classList.remove('hidden');
+            statusText.innerText = "প্রস্তুত আছে";
+            
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance(aiReply));
+            }
+        };
+    }
+
+    function sendCustomerMessage() {
+        const phone = document.getElementById('targetCustomerPhone').value.trim();
+        const message = document.getElementById('customSmsText').value.trim();
+        if (!phone || !message) {
+            alert('নম্বর এবং মেসেজ উভয়ই দিন।');
+            return;
+        }
+        window.open(`https://wa.me/88${phone}?text=${encodeURIComponent(message)}`, '_blank');
+    }
     </script>
 </body>
 </html>
